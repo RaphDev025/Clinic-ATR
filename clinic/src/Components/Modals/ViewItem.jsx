@@ -39,7 +39,7 @@ const ViewItem = ({ selectedItem }) => {
         }
     
         try {
-            const response = await fetch(`https://clinic-api-two.vercel.app/api/products/${formData._id}`, {
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/products/${formData._id}`, {
                 method: 'PATCH',
                 body: JSON.stringify(formData),
                 headers: {
