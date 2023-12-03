@@ -4,7 +4,7 @@ import logo from 'assets/logo/ATR Skin Care Logo.png'
 
 const SideBar = ({children, props}) => {
     return (
-        <aside className={`${props} position-relative`}>
+        <aside className={`${props}side-bar position-relative`}>
             {children}
             <Footer props='position-absolute bottom-0 end-0'>
                 <img src={logo} alt='ATR logo' width='30px'/>

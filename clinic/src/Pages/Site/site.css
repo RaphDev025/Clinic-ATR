@@ -40,3 +40,83 @@ input::placeholder{
 textarea:focus::placeholder{
     color: white;
 }
+.self-container{
+    width: 50%;
+}
+.service-card{
+    width: 75%;
+    display: flex;
+    align-items:center;
+    padding: 30px;
+    gap: 4px;
+}
+.service-header{
+    width: 50%;
+    gap: 30px;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.service-title{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+.service-title > span{
+    width: 50%;
+}
+.service-title > span:nth-child(2){
+    text-align: end;
+}
+.service-list{
+    width: 50%;
+    margin: 0;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #FFFFFF40;
+}
+@media (max-width: 767px){
+    .self-container{
+        width: 100%;
+    }
+    .service-card{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items:center;
+        padding: 10px;
+        gap: 4px;
+    }
+    .service-header{
+        width: 100%;
+        gap: 10px;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .service-title{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+        width: 100%;
+        margin: 0;
+    }
+    .service-title > span{
+        width: 100%;
+    }
+    .service-title > span:nth-child(2){
+        text-align: start;
+    }
+    .service-list{
+        width: 100%;
+
+    }
+}

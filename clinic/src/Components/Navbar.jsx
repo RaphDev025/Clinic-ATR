@@ -11,7 +11,7 @@ const Navbar = () => {
     }
 
     return (
-        <nav className='navbar navbar-expand-lg px-5 fixed-top' style={{color: 'green'}}>
+        <nav className='navbar navbar-expand-lg px-5-md px-3-sm fixed-top' style={{color: 'green'}}>
             <div className='container-fluid'>
                 <Link className='navbar-brand text-success' to='/'>
                     <img src={icon} alt='logo' width='30' height='30' className='d-inline-block align-text-center me-2' />

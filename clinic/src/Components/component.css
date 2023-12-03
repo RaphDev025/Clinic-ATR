@@ -67,7 +67,11 @@
     font-weight: 500;
     color: var(--primary-color);
 }
-
+@media (max-width: 767px){
+    .head {
+        font-size: 16px
+    }
+}
 .transparent-bg{
     background-color: #FFFFFF40;
 }
@@ -103,6 +107,29 @@
     width: 300px;
     flex: 0 0 auto;
     background-color: var(--faded-color);
+}
+.header-testimony{
+    margin-bottom: 50px;
+}
+.testimony-card{
+    padding: 20px;
+}
+.text-content{
+    font-size: 15px;
+}
+
+.feedback-field{
+    width: 40%;
+}
+@media (max-width: 767px){
+    .header-testimony{
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .feedback-field{
+        width: 100%;
+    }
 }
 @keyframes animated-card {
     from {

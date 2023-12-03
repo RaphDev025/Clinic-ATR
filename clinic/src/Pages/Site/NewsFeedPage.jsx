@@ -32,11 +32,11 @@ const NewsFeedPage = () => {
     }, [])
 
     return (
-        <main className='container-fluid pt-5 mt-5 p-0 m-0 overflow-y-auto'>
+        <main className='container-fluid pt-3 mt-5 p-0 m-0 overflow-y-auto'>
             <header>
                 <GradientHeader title={'Announcement'} />
             </header>
-            <section className='d-flex flex-column align-items-center container-fluid px-5 gap-4 pb-5'>
+            <section className='d-flex flex-column align-items-center container-lg px-5-lg px-3-md gap-4 pb-5'>
             {loading ? (
                 <div className='d-flex gap-3 p-5'>
                     <Skeleton count={2} height={50} />
@@ -46,7 +46,7 @@ const NewsFeedPage = () => {
             ) : (
                 <>
                 {news && news.map((post) => (
-                    <article key={post._id} className='p-4 rounded-3 w-50' style={{backgroundColor: 'var(--white)'}}>
+                    <article key={post._id} className='p-4 rounded-3 self-container' style={{backgroundColor: 'var(--white)'}}>
                         <div className='text-center bg-success rounded-3'>
                             <img src={post.post_img} className=' py-4 px-2' width={'50%'} height={'50%'} alt='content_photo'/>
                         </div>
