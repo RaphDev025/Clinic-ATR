@@ -1,0 +1,97 @@
+.home{
+    background: url('../assets/imgs/hero.png');
+    height: 100vh;
+}
+.highlight{
+    color: var(--header-text)
+}
+.atr-img{
+    mix-blend-mode:overlay;
+}
+.orderBtn{
+    border: 2px solid #001E2B;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    transition: all 0.4s ease-in-out;
+}
+.orderBtn:hover{
+    border-radius: 50px;
+}
+
+/* Update Section*/
+.trunc{
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+    overflow:hidden;
+}
+.flip{
+    transform: scaleX(-1);
+}
+.transparent-container{
+    box-shadow: 2.3px 2.3px 6.8px rgba(0, 0, 0, 0.055),
+        6.3px 6.3px 14.5px rgba(0, 0, 0, 0.069),
+        15.1px 15.1px 27.3px rgba(0, 0, 0, 0.079),
+        50px 50px 80px rgba(0, 0, 0, 0.14);
+}
+
+/* services */
+.gri{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.item-card{
+    transition: all 0.3s ease-in-out;
+    box-shadow: 5px 10px 1px var(--black);
+}
+.item-card:hover{
+    transform: translateY(-10px) translateX(-5px);
+    box-shadow: 10px 20px 1px var(--black);
+}
+.title_animate{
+    animation: jump 0.5s ease-in-out infinite alternate; 
+}
+.image-container{
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+    position: relative;
+}
+.image-container:hover{
+    z-index: 3;
+    transform: scale(1.2);
+}
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: var(--transparent-color);
+    transition: height 0.3s;
+    overflow: hidden;
+}
+.image-container:hover .overlay {
+    height: 100%;
+}
+.overlay-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.image-container:hover .overlay-content {
+    opacity: 1;
+}
+@keyframes jump{
+    from{
+        transform: translateY(0px)
+    } to {
+        transform: translateY(-25px)
+    }
+}

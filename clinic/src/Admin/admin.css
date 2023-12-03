@@ -1,0 +1,18 @@
+#dash, #customer, #content, #order, #pickup, #product, #profile{
+    padding: 20px 10px 0px 170px;
+    background: linear-gradient(#000000, #4E4C4C);
+}
+.opaque-background{
+    background: #D9D9D940;
+}
+input[type='file']{
+    display: none
+}
+.itm-list{
+    background-color: #6f7179;
+    color: var(--white);
+    transition: all 0.5s ease;
+}
+    .itm-list:hover{
+        background-color: #b8b8b8;
+    }

@@ -1,0 +1,13 @@
+.backgroundLogin {
+    background: white  
+}
+.txt{
+    font-size: 0.7rem;
+}
+.lnk:hover{
+    text-decoration: underline;
+}
+.dropdown{
+    outline: none;
+
+}

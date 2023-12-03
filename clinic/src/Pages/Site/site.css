@@ -1,0 +1,42 @@
+.bg-transparent{
+    background: rgba(241,241,241,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(241,241,241,0.25);
+}
+.gr{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+.bg-main{
+    background: var(--white); 
+}
+label{
+    display: block;
+    position: relative;
+    transform: translateY(1px);
+    transition: transform 300ms;
+    color: var(--primary-color);
+    width: 150px;
+    padding-left: 10px;
+}
+input, textarea{
+    border: 1px solid var(--primary-color);
+    transition: all 0.1s ease-in-out;
+}
+input:focus, textarea:focus {
+    box-shadow: 0px 0px 3px 3px rgba(0, 153, 255, 0.411);
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+    outline: none;
+}
+label:has(+ input:placeholder-shown){
+    transform: translateY(35px);
+    color: #000000a2;
+}
+input::placeholder{
+    color: transparent;
+}
+textarea:focus::placeholder{
+    color: white;
+}
