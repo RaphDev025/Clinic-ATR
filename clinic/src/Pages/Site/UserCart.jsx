@@ -24,13 +24,15 @@ const UserCart = () => {
 
     // Function to handle checkout
     const handleCheckout = () => {
-        resetItems()
+        resetItems();
         // Filter selected items from cartItemsWithProductInfo
-        const selectedItemsData = cartItemsWithProductInfo.filter((item) => selectedItems.includes(item._id))
-        addItems(selectedItemsData)
-        console.log(selectedItemsData)
+        const selectedItemsData = cartItemsWithProductInfo.filter(
+        (item) => selectedItems.includes(item._id)
+        );
+        addItems(selectedItemsData);
+        console.log(selectedItemsData);
         // // Navigate to the checkout page
-        navigate('/confirmation/order')
+        navigate('/confirmation/order');
     };
 
     // Fetching Data from Database for Cart
@@ -40,14 +42,18 @@ const UserCart = () => {
                 const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart');
                 const json = await response.json();
                 if (response.ok) {
-                    setCart(json)
+                // Filter items based on the logged-in user's ID
+                const userCart = json.filter((item) => item.user_id === user?._id);
+                    setCart(userCart);
                 }
             } catch (error) {
                 console.error('Error fetching cart data:', error);
             }
         };
-        fetchCart();
-    }, []);
+        if (user) {
+            fetchCart();
+        }
+    }, [user]);
 
     // Fetching Data from Database for Products
     useEffect(() => {
@@ -56,24 +62,25 @@ const UserCart = () => {
                 const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/products');
                 const json = await response.json();
                 if (response.ok) {
-                    setProducts(json)
+                    setProducts(json);
                 }
             } catch (error) {
-                console.error('Error fetching product data:', error)
+                console.error('Error fetching product data:', error);
             } finally {
                 // Set loading to false once data is fetched
-                setLoading(false)
+                setLoading(false);
             }
-        }
-        fetchProducts()
-    }, [])
+        };
+        fetchProducts();
+    }, []);
     // Function to map product data to cart items
     const getCartItemWithProductInfo = (cartItem) => {
         // Check if products is not null before using find
-        const product = products && products.find((product) => product._id === cartItem.item_id)
-        return { ...cartItem, product }
-    }
-    const cartItemsWithProductInfo = cart?.map(getCartItemWithProductInfo)
+        const product = products && products.find((product) => product._id === cartItem.item_id);
+        return { ...cartItem, product };
+    };
+    const cartItemsWithProductInfo = cart?.map(getCartItemWithProductInfo);
+
     // Function to handle checkbox change
     const handleCheckboxChange = (itemId) => {
         setSelectedItems((prevSelectedItems) => {
@@ -84,8 +91,8 @@ const UserCart = () => {
                 // If item is not selected, add it
                 return [...prevSelectedItems, itemId];
             }
-        })
-    }
+        });
+    };
     // Function to calculate total quantity of selected items
     const calculateTotalQuantity = () => {
         return selectedItems.reduce((total, itemId) => {
@@ -131,7 +138,7 @@ const UserCart = () => {
     const handleDeleteItem = async (itemId) => {
         // Make an API call to delete the item from the cart in the database
         try {
-            await fetch(`https://clinic-atr-server-inky.vercel.app/api/cart/${itemId}`, {
+            await fetch(`https://clinic-api-two.vercel.app/api/cart/${itemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
