@@ -12,8 +12,8 @@ const CustomerMgmt = () => {
     useEffect(() => {
         const fetchCount = async () => {
         try {
-            const response = await fetch('https://clinic-api-two.vercel.app/api/users/count');
-            const response2 = await fetch('https://clinic-api-two.vercel.app/api/users/new-count');
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/users/count');
+            const response2 = await fetch('https://clinic-atr-server-inky.vercel.app/api/users/new-count');
             const json = await response.json()
             const json2 = await response2.json()
 
@@ -35,7 +35,7 @@ const CustomerMgmt = () => {
     useEffect(() => {
         const fetchProducts = async () => {
         try {
-            const response = await fetch('https://clinic-api-two.vercel.app/api/users');
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/users');
             const json = await response.json();
 
             if (response.ok) {

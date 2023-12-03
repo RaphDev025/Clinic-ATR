@@ -37,7 +37,7 @@ const UserCart = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await fetch('https://clinic-api-two.vercel.app/api/cart');
+                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart');
                 const json = await response.json();
                 if (response.ok) {
                     setCart(json)
@@ -53,7 +53,7 @@ const UserCart = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://clinic-api-two.vercel.app/api/products');
+                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/products');
                 const json = await response.json();
                 if (response.ok) {
                     setProducts(json)
@@ -131,7 +131,7 @@ const UserCart = () => {
     const handleDeleteItem = async (itemId) => {
         // Make an API call to delete the item from the cart in the database
         try {
-            await fetch(`https://clinic-api-two.vercel.app/api/cart/${itemId}`, {
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/cart/${itemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

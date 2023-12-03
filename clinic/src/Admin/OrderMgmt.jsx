@@ -16,11 +16,11 @@ const OrderMgmt = () => {
     useEffect(() => {
         const fetchProducts = async () => {
         try {
-            const response = await fetch('https://clinic-api-two.vercel.app/api/ordering')
-            const count = await fetch('https://clinic-api-two.vercel.app/api/ordering/count')
-            const pending = await fetch('https://clinic-api-two.vercel.app/api/ordering/pending')
-            const daily = await fetch('https://clinic-api-two.vercel.app/api/ordering/complete')
-            const progress = await fetch('https://clinic-api-two.vercel.app/api/ordering/in-progress')
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering')
+            const count = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/count')
+            const pending = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/pending')
+            const daily = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/complete')
+            const progress = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/in-progress')
 
             const jsonCount = await count.json()
             const json = await response.json()
@@ -48,7 +48,7 @@ const OrderMgmt = () => {
     const setStatus = async (orderId, newStatus) => {
         try {
           // Send a PATCH request to update the order status
-        const response = await fetch(`https://clinic-api-two.vercel.app/api/ordering/${orderId}`, {
+        const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/ordering/${orderId}`, {
             method: 'PATCH',
             headers: {
             'Content-Type': 'application/json',

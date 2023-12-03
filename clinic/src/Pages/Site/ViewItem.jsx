@@ -45,7 +45,7 @@ const ViewItem = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Add your form submission logic here using formData
-        const response = await fetch('https://clinic-api-two.vercel.app/api/cart', {
+        const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart', {
             method: 'POST',
             body: JSON.stringify(item),
             headers: {

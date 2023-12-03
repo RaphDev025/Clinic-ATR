@@ -15,11 +15,11 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchProducts = async () => {
         try {
-            const response = await fetch('https://clinic-api-two.vercel.app/api/products/top-products');
-            const responseTotal  = await fetch('https://clinic-api-two.vercel.app/api/ordering/get-total');
-            const resTotalUsers  = await fetch('https://clinic-api-two.vercel.app/api/users/count');
-            const responseTotalSales = await fetch('https://clinic-api-two.vercel.app/api/ordering/total-sales');
-            const resCompleted = await fetch('https://clinic-api-two.vercel.app/api/ordering/complete');
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/products/top-products');
+            const responseTotal  = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/get-total');
+            const resTotalUsers  = await fetch('https://clinic-atr-server-inky.vercel.app/api/users/count');
+            const responseTotalSales = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/total-sales');
+            const resCompleted = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering/complete');
             
             const json = await response.json(); 
             const totalData  = await responseTotal.json()

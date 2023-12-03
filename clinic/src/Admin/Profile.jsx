@@ -60,7 +60,7 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await fetch(`https://clinic-api-two.vercel.app/api/users/${user._id}`, {
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/${user._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

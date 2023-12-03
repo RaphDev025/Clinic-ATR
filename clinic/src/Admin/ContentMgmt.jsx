@@ -18,7 +18,7 @@ const ContentMgmt = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Add your form submission logic here using formData
-        const response = await fetch('https://clinic-api-two.vercel.app/api/articles', {
+        const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/articles', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {

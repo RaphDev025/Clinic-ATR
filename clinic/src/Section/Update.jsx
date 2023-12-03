@@ -18,7 +18,7 @@ const Update = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://clinic-api-two.vercel.app/api/articles/latest');
+        const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/articles/latest');
         const json = await response.json();
 
         if (response.ok) {
@@ -62,7 +62,7 @@ const Update = () => {
                 </div>
                 <div className='gap-3 d-flex pt-4'>
                   <button className='btn btn-outline-success' onClick={handleSubmit}><BsBookFill /> Read</button>
-                  <FacebookShareButton url={`https://atr-clinic-client.vercel.app/newsfeed`} quote={'Check what`s Latest'} hashtag={'#ATRSkinCareClinic'}>
+                  <FacebookShareButton url={`https://clinic-atr-server-inky.vercel.app/newsfeed`} quote={'Check what`s Latest'} hashtag={'#ATRSkinCareClinic'}>
                     <button className='btn btn-outline-success'><BiShare className='flip' /> Share</button>
                   </FacebookShareButton>
                 </div>

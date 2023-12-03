@@ -14,7 +14,7 @@ const LoginPage = () => {
 
         try {
             // Fetch all user data
-            const response = await fetch('https://clinic-api-two.vercel.app/api/users');
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/users');
             const allUserData = await response.json();
 
             // Iterate through fetched data to find the user

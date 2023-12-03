@@ -15,8 +15,8 @@ const PreOrder = () => {
     useEffect(() => {
         const fetchProducts = async () => {
         try {
-            const response = await fetch('https://clinic-api-two.vercel.app/api/pre-order')
-            const count = await fetch('https://clinic-api-two.vercel.app/api/pre-order/count')
+            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order')
+            const count = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order/count')
 
             const jsonCount = await count.json()
             const json = await response.json()
@@ -38,7 +38,7 @@ const PreOrder = () => {
     const setStatus = async (orderId, newStatus) => {
         try {
           // Send a PATCH request to update the order status
-        const response = await fetch(`https://clinic-api-two.vercel.app/api/pre-order/${orderId}`, {
+        const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${orderId}`, {
             method: 'PATCH',
             headers: {
             'Content-Type': 'application/json',

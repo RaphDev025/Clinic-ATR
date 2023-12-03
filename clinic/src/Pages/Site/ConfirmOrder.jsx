@@ -34,7 +34,7 @@ const ConfirmOrder = () => {
         // Ensure that handleCompute is called before submitting
         handleCompute();
         // Add your form submission logic here using formData
-        const response = await fetch('https://clinic-api-two.vercel.app/api/ordering', {
+        const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering', {
             method: 'POST',
             body: JSON.stringify(itemStates),
             headers: {
@@ -77,7 +77,7 @@ const ConfirmOrder = () => {
         try {
           // Iterate over items and update product quantity
             for (const item of items) {
-                const response = await fetch(`https://clinic-api-two.vercel.app/api/products/${item.item_id}`);
+                const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/products/${item.item_id}`);
                 const currentProduct = await response.json();
         
                 if (!response.ok) {
@@ -105,7 +105,7 @@ const ConfirmOrder = () => {
                 const { _id: cartItemId } = item;
         
                 // Send DELETE request to remove item from cart
-                await fetch(`https://clinic-api-two.vercel.app/api/cart/${cartItemId}`, {
+                await fetch(`https://clinic-atr-server-inky.vercel.app/api/cart/${cartItemId}`, {
                     method: 'DELETE',
                 });
             }
