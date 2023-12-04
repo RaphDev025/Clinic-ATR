@@ -59,6 +59,24 @@ const getUserById = async (req, res) => {
     res.status(200).json(user)
 }
 
+const getUserByUsername = async (req, res) => {
+    const { user_name } = req.params;
+    try {
+      // Find the user with the provided user_name
+        const user = await User.findOne({ user_name });
+    
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+      // Return the user data
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 // create user
 const createUser = async (req, res) => {
     const {first_name, last_name, user_name, email, password, gender, user_type, address, profile, phone} = req.body
@@ -126,6 +144,7 @@ const updateUserPassword = async (req, res) => {
 };
 
 module.exports = {
+    getUserByUsername,
     updateUserPassword,
     getUsers, 
     getUserById,

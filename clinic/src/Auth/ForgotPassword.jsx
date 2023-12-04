@@ -11,32 +11,32 @@ import { useNavigate } from 'react-router-dom'
     const handleUpdatePassword = async () => {
         try {
           // Fetch user data from the provided API endpoint
-          const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/${userName}`);
-          const userData = await response.json();
-    
-          // Check if user exists
-          if (userData) {
-            // Check if newPassword and confirmPassword match
-            if (newPassword === confirmPassword) {
-              // Update password using the PATCH method and the provided API endpoint
-              await fetch(`https://clinic-atr-server-inky.vercel.app/api/update-password/${userName}`, {
-                method: 'PATCH',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ newPassword }),
-              });
-              alert('Password updated successfully!');
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/${userName}`);
+            const userData = await response.json();
+        
+            // Check if user exists
+            if (userData) {
+                // Check if newPassword and confirmPassword match
+                if (newPassword === confirmPassword) {
+                    // Update password using the PATCH method and the provided API endpoint
+                    await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/update-password/${userName}`, {
+                        method: 'PATCH',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ newPassword }),
+                    });
+                    alert('Password updated successfully!');
+                } else {
+                    alert('New password and confirm password do not match!');
+                }
             } else {
-              alert('New password and confirm password do not match!');
+                alert('User not found. Please enter a valid username.');
             }
-          } else {
-            alert('User not found. Please enter a valid username.');
-          }
         } catch (error) {
-          console.error('Error updating password:', error);
+            console.log('Error updating password:', error);
         }
-      };
+    };
 
     return (
         <main className='backgroundLogin login-container'>
