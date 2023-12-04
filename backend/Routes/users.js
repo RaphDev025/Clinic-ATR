@@ -1,5 +1,5 @@
 const express = require('express')
-const { createUser, getUserById, getUsers, deleteUser, countNewUsersInCurrentMonth, countUsers, updateUser } = require('../Controllers/UserController')
+const { createUser, getUserById, updateUserPassword, getUsers, deleteUser, countNewUsersInCurrentMonth, countUsers, updateUser } = require('../Controllers/UserController')
 
 const router = express.Router()
 
@@ -16,5 +16,7 @@ router.post('/', createUser)
 router.delete('/:id', deleteUser)
 
 router.patch('/:id', updateUser)
+
+router.patch('/update-password/:user_name', updateUserPassword)
 
 module.exports = router

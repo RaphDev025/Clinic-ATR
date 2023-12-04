@@ -9,5 +9,175 @@
 }
 .dropdown{
     outline: none;
+}
+.login-container{
+    display: flex;
+    padding: 20px;
+    width: 100%;
+}
+.inner-container{
+    padding: 30px;
+    padding-top: 100px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+.forgot-pass{
+    padding: 30px;
+    padding-top: 100px;
+    width: 50%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.form-style{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 10px;
+}
+.form-style2{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
+}
+.container-child{
+    width: 75%;
+    padding: 30px;
+}
+.input-field-group{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 10px;
+}
+.company{
+    padding: 15px;
+    width: 25%;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.registration-container{
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+.inner-registration-container{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+.group-fields{
+    display: flex;
+    gap: 15px;
+}
+.user-inputs{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: end;
+}
+.register-form{
+    width: 100%;
+}
+.header{
+    width: 50%;
+}
+.submit-button{
+    display: flex;
+    justify-content: end;
+    padding: 15px 0;
+    width: 100%;
+}
+.comp{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 15px;
+    width: 100%;
+}
+@media (max-width: 767px){
+    .comp{
+        display: flex;
+        flex-direction: column;
+    }
+    .forgot-pass{
+        padding: 30px;
+        padding-top: 100px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .submit-button > button{
+        width: 100%;
+    }
+    .group-fields{
+        flex-direction: column;
+        gap: 5px;
+    }
+    .header{
+        width: 100%;
+        display: flex;
+    }
+    .user-inputs{
+        width: 100%;
+    }
+    .gender{
+        margin-top: 30px;
+    }
+    .register-form{
+        height: 90%;
+        overflow-y: scroll;
+    }
+    .registration-container{
+        width: 100%;
+        display: flex;
+    }
+    .inner-registration-container{
+        width: 100%;
+        height: 90%;
+        padding: 0;
+    }
+    .login-container{
+        padding: 10px;
+    }
+    .inner-container{
+        padding: 10px;
+        padding-top: 50px;
+        width: 100%;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .form-style{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-around;
+        align-items: start;
+    }
+    .container-child{
+        width: 100%;
+        padding: 30px;
+        height: 100%;
 
+    }
+    .input-field-group{
+        width: 100%;
+    }
+    .company{
+        display: none;
+    }
 }

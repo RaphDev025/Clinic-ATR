@@ -100,7 +100,33 @@ const updateUser = async (req, res) => {
     }
     res.status(200).json(user)
 }
+
+const updateUserPassword = async (req, res) => {
+    const { user_name } = req.params;
+
+    try {
+      // Check if user with the provided user_name exists
+        const user = await User.findOne({ user_name });
+    
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+    
+        // Update the password
+        user.password = req.body.newPassword; // Assuming your user model has a 'password' field
+    
+        // Save the updated user to the database
+        await user.save();
+    
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
+    updateUserPassword,
     getUsers, 
     getUserById,
     countUsers,

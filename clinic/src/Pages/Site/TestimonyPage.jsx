@@ -1,13 +1,8 @@
-import React, { useState } from 'react'
-import { GradientHeader, SideBar, Testimonials } from 'Components'
+import React from 'react'
+import { GradientHeader, Testimonials } from 'Components'
 import avatar from 'assets/extra/Vector.png'
 
 const TestimonyPage = () => {
-    const [select, setSelected] = useState(true)
-
-    const handleItemClick = () => {
-        setSelected(!select)
-    }
 
     const sampleData = [
         {

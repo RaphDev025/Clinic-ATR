@@ -1,34 +1,70 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
     const ForgotPassword = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const [userName, setUserName] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('')
     
+    const handleUpdatePassword = async () => {
+        try {
+          // Fetch user data from the provided API endpoint
+          const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/${userName}`);
+          const userData = await response.json();
+    
+          // Check if user exists
+          if (userData) {
+            // Check if newPassword and confirmPassword match
+            if (newPassword === confirmPassword) {
+              // Update password using the PATCH method and the provided API endpoint
+              await fetch(`https://clinic-atr-server-inky.vercel.app/api/update-password/${userName}`, {
+                method: 'PATCH',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ newPassword }),
+              });
+              alert('Password updated successfully!');
+            } else {
+              alert('New password and confirm password do not match!');
+            }
+          } else {
+            alert('User not found. Please enter a valid username.');
+          }
+        } catch (error) {
+          console.error('Error updating password:', error);
+        }
+      };
+
     return (
-        <main className='backgroundLogin container-fluid d-flex p-5 m-0 vh-100'>
-            <section className='container d-flex justify-content-center align-items-center mt-5 px-5'>
-                <div className='p-5 text-light rounded-5 background-form col-5'>
-                    <div>
-                        <h3 className='fs-bold text-uppercase text-success border-bottom border-5 border-warning px-3'>Forgot Password</h3>
-                    </div>
-                    <form>
-                        <div className='d-flex flex-column w-100'>
-                            <label htmlFor='fName'>User Name</label>
-                            <input type='text' className='p-2 rounded-3' id='fName' placeholder='User Name' required />
-                        </div>
-                        <div className='d-flex flex-column w-100 mt-3'>
-                            <label htmlFor='password'>Password</label>
-                            <input type='password' className='p-2 rounded-3' id='password' placeholder='Password' required />
-                        </div>
-                        <div className='d-flex justify-content-end p-0 pt-2 container'>
-                            <button className='btn btn-outline-success px-4'><strong>Log In</strong></button>
-                        </div>
-                        <div className='d-flex align-items-center justify-content-start p-0 container'>
-                            <span className='txt text-dark'>Don't have an account yet?</span>
-                        </div>
-                    </form>
+        <main className='backgroundLogin login-container'>
+            <section className=' forgot-pass'>
+                <div>
+                    <h3 className='fs-bold text-uppercase text-success border-bottom border-5 border-warning px-3'>Forgot Password</h3>
                 </div>
+                <form className='form-style2'>
+                    <div className='d-flex flex-column w-100 mt-3'>
+                        <label htmlFor='text'>Your User Name</label>
+                        <input value={userName} onChange={(e) => setUserName(e.target.value)} type='text' className='p-2 rounded-3' id='user_name' placeholder='Your User Name' required />
+                    </div>
+                    <div className='d-flex flex-column w-100'>
+                        <label htmlFor='password'>New Password</label>
+                        <input value={newPassword} onChange={(e) => setNewPassword(e.target.value)} type='password' className='p-2 rounded-3' id='password' placeholder='New Password' required />
+                    </div>
+                    <div className='d-flex flex-column w-100'>
+                        <label htmlFor='new-password'>Confirm Password</label>
+                        <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type='password' className='p-2 rounded-3' id='new-password' placeholder='Confirm Password' required />
+                    </div>
+                    <div className='d-flex align-items-center w-100 justify-content-start p-0 container'>
+                        <span onClick={() => navigate('/auth/user-login')} style={{cursor: 'pointer', fontSize: '16px'}} className='text-warning'>Click here to return</span>
+                    </div>
+                    <div className='comp'>
+                        <button onClick={() => handleUpdatePassword()} className='btn btn-outline-success w-100 px-4'><strong>Update Password</strong></button>
+                    </div>
+                    
+                </form>
             </section>
         </main>
     )
