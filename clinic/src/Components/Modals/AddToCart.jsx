@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { IconPark } from 'assets/SvgIcons';
-import { useCart } from 'Context/CartContext';
-import { useAuth } from 'Context/AuthContext';
+import React, { useState, useEffect } from 'react'
+import { IconPark } from 'assets/SvgIcons'
+import { useCart } from 'Context/CartContext'
+import { useAuth } from 'Context/AuthContext'
 
 const AddToCart = () => {
   const { itemData } = useCart();

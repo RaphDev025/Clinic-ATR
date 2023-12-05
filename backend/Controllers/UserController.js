@@ -79,9 +79,9 @@ const getUserByUsername = async (req, res) => {
 
 // create user
 const createUser = async (req, res) => {
-    const {first_name, last_name, user_name, email, password, gender, user_type, address, profile, phone} = req.body
+    const {first_name, last_name, user_name, email, password, gender, user_type, address, profile, phone, notifications} = req.body
     try{
-        const user = await User.create({first_name, last_name, user_name, email, password, gender, user_type, address, profile, phone})
+        const user = await User.create({first_name, last_name, user_name, email, password, gender, user_type, address, profile, phone, notifications})
         res.status(200).json(user)
     }catch(error){
         res.status(400).json({error: error.message})
@@ -94,7 +94,6 @@ const deleteUser = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'No User Found'})
     }
-
     const user = await User.findOneAndDelete({_id: id})
 
     if(!user){
@@ -112,7 +111,6 @@ const updateUser = async (req, res) => {
     const user = await User.findByIdAndUpdate({_id: id}, {
         ...req.body
     })
-
     if(!user){
         return res.status(404).json({error: 'No User Found'})
     }
@@ -121,7 +119,6 @@ const updateUser = async (req, res) => {
 
 const updateUserPassword = async (req, res) => {
     const { user_name } = req.params;
-
     try {
       // Check if user with the provided user_name exists
         const user = await User.findOne({ user_name });
@@ -132,7 +129,6 @@ const updateUserPassword = async (req, res) => {
         console.log(user)
         // Update the password
         user.password = req.body.newPassword; // Assuming your user model has a 'password' field
-    
         // Save the updated user to the database
         await user.save();
     

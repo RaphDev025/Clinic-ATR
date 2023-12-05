@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import icon from 'assets/logo/ATR Skin Care Logo.png'
 import { IconPark } from 'assets/SvgIcons'
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from 'Context/AuthContext'
 
 const Navbar = () => {
     const [select, setSelected] = useState('home')
     const [isNavbarCollapsed, setNavbarCollapsed] = useState(true)
+    const { user } = useAuth();
+    const [notifications, setNotifications] = useState([])
 
     const handleItemClick = (state) => {
         setSelected(state)
@@ -18,6 +21,14 @@ const Navbar = () => {
     }
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if user and notifications are defined before updating state
+        if (user && user.notifications) {
+          // Set notifications in local state
+            setNotifications(user.notifications);
+        }
+    }, [user]);
 
     return (
         <nav className='navbar navbar-expand-lg px-5-md px-3-sm fixed-top' style={{color: 'green'}}>
@@ -55,7 +66,22 @@ const Navbar = () => {
                     {/* Buttons */}
                     <form className='d-flex justify-content-center gap-3 p-2'>
                         <Link onClick={handleNavbarToggle} to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
-                        <Link onClick={handleNavbarToggle} to='/' className=' px-1 nav-button'><IconPark path={'mdi:bell'} size={24}/></Link>
+                        <div className="dropdown dropstart">
+                            <Link className=' px-1 nav-button' data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
+                                <IconPark path={'mdi:bell'} size={24}/>
+                            </Link>
+                            <ul className="dropdown-menu">
+                            {notifications && notifications.length > 0 ? (
+                                notifications.map((notify, index) => (
+                                    <li key={index} className="dropdown-item">
+                                    {/* Render your notification content here */}
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="dropdown-item">No notifications yet</li>
+                            )}
+                            </ul>
+                        </div>
                         <Link onClick={handleNavbarToggle} to='/user-profile' className=' px-1 nav-button'><IconPark path={'mingcute:user-4-fill'} size={24}/></Link>
                     </form>
                 </div>
