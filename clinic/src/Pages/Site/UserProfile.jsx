@@ -116,12 +116,14 @@ const UserProfile = () => {
     return (
         <main id='user-profile' className={`usr-prfl ${isVisible ? 'appear' : ''} container-fluid pt-5 vh-100 `}> 
             <section className='rounded-2 container px-3 py-5 d-flex flex-column'> 
-                <h6 className='ms-auto'><button type='button' onClick={handleLogout} className='btn btn-outline-danger'>Logout</button></h6>
+                <h6 className='ms-auto'>
+                    <button type='button' onClick={handleLogout} className='btn btn-outline-danger'>Logout</button>
+                </h6>
                 <section className='p-4 rounded-3 ' style={{backgroundColor: '#B2B2B280'}}>
                     {userDetails._id && (
                     <form onSubmit={handleSave} >
-                        <div className='d-flex gap-3'>
-                            <div className='d-flex flex-column w-50'>
+                        <div className='user-profile gap-3'>
+                            <div className='user-image'>
                                 <label htmlFor='post_img' className='p-4 w-100 rounded-5 bg-secondary'>
                                     <img alt={vector} width={'100%'} src={userDetails.post_img || vector} />
                                 </label>
@@ -137,7 +139,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        <div className='d-flex gap-3'>
+                        <div className='user-fields gap-3'>
                             <div className='d-flex flex-column w-100'>
                                 <label htmlFor='user_name'>User Name</label>
                                 <input type='text' value={userDetails.user_name} onChange={handleChange} className='p-2 rounded-3' id='user_name' placeholder='User Name' required />
@@ -152,7 +154,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        <div className='d-flex gap-3'>
+                        <div className='user-fields gap-3'>
                             <div className='d-flex flex-column w-100'>
                                 <label htmlFor='gender'>Gender</label>
                                 <input type='text' value={userDetails.gender} onChange={handleChange} className='p-2 rounded-3' id='gender' placeholder='Gender' required />

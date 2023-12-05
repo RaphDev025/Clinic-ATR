@@ -3,14 +3,16 @@ import { GradientHeader } from 'Components';
 import { IconPark } from 'assets/SvgIcons';
 import { useItems } from 'Context/ItemsContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'Context/AuthContext';
 
 const ConfirmOrder = () => {
+    const { user } = useAuth();
     const { items, resetItems } = useItems()
     const navigate = useNavigate()
     const [itemStates, setItemStates] = useState({
-        user_name: 'Raphael',
-        phone: '09269607368',
-        address: '558 M De Jesus Street Pasay City',
+        user_name: user.first_name,
+        phone: user.phone,
+        address: user.address,
         shipping: 'For Delivery',
         courier: '',
         total_amount: 0,
@@ -20,6 +22,7 @@ const ConfirmOrder = () => {
     useEffect(() => {
         handleCompute()
     }, [])
+
     const handleCancel = () => {
         resetItems()
         navigate('/cart')
@@ -121,12 +124,20 @@ const ConfirmOrder = () => {
 
     const handleCompute = () => {
         let totalAmount = 0, total_qty = 0
+        let deliveryOptionsCount = {
+            'For Delivery': 0,
+            'For Pickup': 0,
+        }
 
         items.forEach(item => {
             const subtotal = item.unit_price * item.qty;
             totalAmount += subtotal;
             total_qty += item.qty;
+            // Count the occurrence of each delivery option
+            deliveryOptionsCount[item.shipping]++;
         })
+        // Determine the most common delivery option
+        const mostCommonDeliveryOption = Object.keys(deliveryOptionsCount).reduce((a, b) => deliveryOptionsCount[a] > deliveryOptionsCount[b] ? a : b);
 
         const newItems = items.map(item => ({
             item_name: item.item_name,
@@ -140,6 +151,7 @@ const ConfirmOrder = () => {
             ...itemStates,
             total_amount: totalAmount,
             total_qty: total_qty,
+            shipping: mostCommonDeliveryOption,
             item_list: newItems
         })
     }

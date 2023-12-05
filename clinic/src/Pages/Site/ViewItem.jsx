@@ -84,19 +84,19 @@ const ViewItem = () => {
         <main className='container-fluid bg-main d-flex pt-2 p-0 m-0 vh-100'>
             <section className='container-fluid p-3 mt-5 overflow-y-auto' >
                 <GradientHeader title={'ATR Skin Care Shop'} />
-                <form onSubmit={handleSubmit} className='m-3 d-flex align-items-start rounded-3' style={{backgroundColor: '#00FF3812'}}>
-                    <div className='w-50 p-3 d-flex justify-content-center'>
-                        <img src={itemData.product_img } alt='prod' height='500px' />
+                <form onSubmit={handleSubmit} className='view-item m-3 rounded-3' style={{backgroundColor: '#00FF3812'}}>
+                    <div className='item-image'>
+                        <img src={itemData.product_img } alt='prod' className='view-img' />
                     </div>
-                    <div className='flex-column w-50 rounded-2 p-3 bg-light text-light d-flex justify-content-start align-items-start gap-3'>
+                    <div className='view-item-details rounded-2 p-3 bg-light text-light gap-3'>
                         <div className='d-flex flex-column gap-3 w-100'>
-                            <h1 className='card-title fw-bold text-dark mb-3 text-wrap w-100'>{item.item_name}</h1>
-                            <p className='card-text text-success fw-medium fs-6'>Selling at: P {item.unit_price}.00</p>
+                            <h1 className='m-0 card-title fw-bold text-dark text-wrap w-100'>{item.item_name}</h1>
+                            <p className='m-0 card-text text-success fw-medium fs-6'>Selling at: P {item.unit_price}.00</p>
                             <div className='d-flex justify-content-between text-dark'>
-                                <p>Best Seller</p>
-                                <p>Sold</p>
+                                <p className='m-0'>Best Seller</p>
+                                <p className='m-0'>Sold</p>
                             </div>
-                            <div className='d-flex flex-column'>
+                            <div className='d-flex flex-column item-qty'>
                                 <h6 className='fw-bold text-dark'>Quantity</h6>
                                 <div className='d-flex'>
                                     <button type='button' className='btn btn-sm btn-outline-secondary' onClick={handleDecrement}><IconPark path={'ic:round-minus'} /></button>
@@ -127,8 +127,8 @@ const ViewItem = () => {
                             }
                         </div>
                         <div className='d-flex gap-3 w-100'>
-                            <button type='submit' className={`w-100 btn ${itemData.qty === 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} /></button>
-                            <button type='submit' className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Pre-Order <IconPark path={'ph:basket-bold'} size={18} /></button>
+                            <button type='submit' style={{fontSize: '12px'}} className={`w-100 btn ${itemData.qty === 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} /></button>
+                            <button type='submit' style={{fontSize: '12px'}} className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Pre-Order <IconPark path={'ph:basket-bold'} size={18} /></button>
                         </div>
                     </div>
                 </form>

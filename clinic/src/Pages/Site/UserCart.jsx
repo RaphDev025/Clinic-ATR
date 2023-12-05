@@ -174,7 +174,7 @@ const UserCart = () => {
                             cartItemsWithProductInfo && cartItemsWithProductInfo.length > 0 ? (
                                 cartItemsWithProductInfo?.map((item) => (
                                     <>
-                                    <div className='rounded-2 p-3 px-2 align-items-center border border-1 d-flex w-100' style={{fontSize: '12px'}} key={item._id}>
+                                    <div className='cart-items rounded-2 p-3 px-2 border border-1 w-100' style={{fontSize: '12px'}} key={item._id}>
                                         <input type='checkbox' checked={selectedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
                                         
                                         <div className='w-100 d-flex gap-3 align-items-center'>
@@ -196,23 +196,24 @@ const UserCart = () => {
                                         </button>
                                     </div>
                                     
-                                    <div className='rounded-2 p-3 px-2 align-items-center border border-1 d-flex w-100' style={{fontSize: '12px'}} key={item._id}>
+                                    <div className='cart-items-two rounded-2 p-3 px-2 border border-1 w-100' style={{fontSize: '12px'}} key={item._id}>
                                         <input type='checkbox' checked={selectedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
                                         
-                                        <div className='w-100 d-flex gap-3 align-items-center'>
+                                        <div className='w-100 d-flex flex-column gap-2 align-items-start'>
                                             <img src={item.product?.product_img} width={'60px'} alt={item.product?.item_name} />
-                                            <span className='m-0 text-center'>{item.product?.item_name}</span>
+                                            <div className='d-flex'>
+                                                <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleDecrease(item._id)} ><IconPark path={'ic:round-minus'} /></button>
+                                                <input type='number' min={1} className='text-center bg-light rounded-3 p-1' style={{width: '50px'}} value={item.qty} onChange={(e) => handleQuantityChange(item._id, e.target.value)} />
+                                                <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleIncrease(item._id)} ><IconPark path={'ic:round-plus'} /></button>
+                                            </div>
                                         </div>
-                                        
-                                        <span className='m-0 w-100 text-center'>Php {item.product?.unit_price}.00</span>
-                                        <div className='d-flex'>
-                                            <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleDecrease(item._id)} ><IconPark path={'ic:round-minus'} /></button>
-                                            <input type='number' min={1} className='text-center bg-light rounded-3 p-1' style={{width: '50px'}} value={item.qty} onChange={(e) => handleQuantityChange(item._id, e.target.value)} />
-                                            <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleIncrease(item._id)} ><IconPark path={'ic:round-plus'} /></button>
+                                        <div className='d-flex w-100 flex-column' >
+                                            <span className='m-0 text-start fw-bold'>{item.product?.item_name}</span>
+                                            
+                                            <span className='m-0 w-100 text-start' style={{fontSize: '10    px'}}>Php {item.product?.unit_price * item.qty}.00</span>
+                                            <span className='m-0 w-100 text-start' style={{fontSize: '10    px'}}>Courier: {item.courier}</span>
+                                            <span className='m-0 w-100 text-start text-success' style={{fontSize: '10   px'}}>{item.shipping} <IconPark size={24} path={item.shipping === 'For Delivery' ? 'tabler:truck-delivery' : 'icon-park-outline:delivery'} /></span>
                                         </div>
-                                        <span className='m-0 w-100 text-center'>Php {item.product?.unit_price * item.qty}.00</span>
-                                        <span className='m-0 w-100 text-center'>{item.courier}</span>
-                                        <span className='m-0 w-100 text-center text-success'>{item.shipping} <IconPark size={24} path={item.shipping === 'For Delivery' ? 'tabler:truck-delivery' : 'icon-park-outline:delivery'} /></span>
                                         <button type='button' className='btn btn-sm btn-outline-danger' onClick={() => handleDeleteItem(item._id)}>
                                             <IconPark path={'mdi:trash-can-outline'} size={23} />
                                         </button>
@@ -228,7 +229,7 @@ const UserCart = () => {
                     </div>
                 </div>
             </section>
-            <div className='position-fixed bottom-0 container-fluid bg-secondary-subtle d-flex justify-content-end gap-3 align-items-center px-5 p-3'>
+            <div className='hidden-items position-fixed bottom-0 container-fluid bg-secondary-subtle gap-3 px-5 p-3'>
                 <div className=''>
                     <span>Total ({calculateTotalQuantity()} product(s))</span>
                 </div>
@@ -236,6 +237,14 @@ const UserCart = () => {
                     <span className='text-success'>Total Amount: Php {calculateTotalAmount()}.00</span>
                     <button disabled={selectedItems.length === 0} className='btn btn-success btn-lg' onClick={handleCheckout}>Checkout</button>
                 </div>
+            </div>
+
+            <div className='hidden-items-two position-fixed bottom-0 container-fluid bg-secondary-subtle gap-3 px-3 p-3'>
+                <div className='d-flex flex-column gap-3 align-items-start'>
+                    <span style={{fontSize: '12px'}} >Total: ({calculateTotalQuantity()} product(s))</span>
+                    <span style={{fontSize: '12px'}} className='text-success'>Total Amount: Php {calculateTotalAmount()}.00</span>
+                </div>
+                <button disabled={selectedItems.length === 0} className='btn btn-success btn-lg' onClick={handleCheckout}>Checkout</button>
             </div>
         </main>
     );

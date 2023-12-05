@@ -93,6 +93,45 @@ const OrderMgmt = () => {
     }
     const subHeaders = ['Item Code', 'Item Description', 'Quantity', 'Selling Price', 'Sub Total']
 
+    // Function to handle delete button
+    const handleDeleteItem = async (itemId, orderStatus) => {
+        try {
+            // Make an API call to delete the item from the cart in the database
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/ordering/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            // If the API call is successful, update the state
+            setOrders((prevOrders) => prevOrders.filter((item) => item._id !== itemId));
+    
+            // Update counts based on the order status
+            switch (orderStatus) {
+                case 'Pending':
+                    setPendingOrders((prevPendingOrders) => prevPendingOrders - 1);
+                    break;
+                case 'Completed':
+                    setCompleteOrders((prevCompleteOrders) => prevCompleteOrders - 1);
+                    break;
+                case 'In-Progress':
+                    setProgressOrders((prevProgressOrders) => prevProgressOrders - 1);
+                    break;
+                default:
+                    break;
+            }
+    
+            // Update total orders count
+            setTotalOrders((prevTotalOrders) => prevTotalOrders - 1);
+            
+            console.log('Item deleted successfully');
+        } catch (error) {
+            console.log('Error deleting item from the cart:', error);
+        }
+    };
+    
+
     return (
         <main id='order' className=' container-fluid  '> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4'> 
@@ -169,7 +208,7 @@ const OrderMgmt = () => {
                                                 </ul>
                                             </div>
                                             <span className='w-100 text-truncate'>
-                                                <button className='btn'><IconPark path={'ic:outline-delete'} size={20}/></button>    
+                                                <button className='btn' type='button'  onClick={() => handleDeleteItem(order._id, order.status)} > <IconPark path={'ic:outline-delete'} size={20}/></button>    
                                             </span>
                                         </div>              
                                     </div>

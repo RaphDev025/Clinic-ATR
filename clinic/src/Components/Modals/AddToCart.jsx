@@ -89,10 +89,10 @@ const AddToCart = () => {
 
     // Reset the item state after submission
     setItem({
-      user_name: '',
-      phone: '',
-      address: '',
-      user_id: '',
+      user_name: user.first_name,
+      phone: user.phone,
+      address: user.address,
+      user_id: null,
       item_name: '',
       qty: 1,
       unit_price: 1,
@@ -114,9 +114,9 @@ const AddToCart = () => {
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit} className="d-flex flex-column gap-2 w-100 text-success">
-              <div className="d-flex gap-2">
+              <div className="item-details gap-2">
                 <div className="h-25">{itemData.product_img && <img alt="product" src={itemData.product_img} width={'250px'} height={'250px'} />}</div>
-                <div className="d-flex flex-column gap-3">
+                <div className="d-flex flex-column w-100 gap-3">
                   <h4 className="fw-bold">{itemData.item_name}</h4>
                   <div className="d-flex flex-column">
                     <h6 className="fw-bold">Quantity</h6>

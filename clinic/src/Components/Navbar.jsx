@@ -5,14 +5,20 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [select, setSelected] = useState('home')
+    const [isNavbarCollapsed, setNavbarCollapsed] = useState(true)
 
     const handleItemClick = (state) => {
         setSelected(state)
+        setNavbarCollapsed(true)
+    }
+
+    const handleNavbarToggle = () => {
+        // Toggle the collapsed state of the navbar in mobile mode
+        setNavbarCollapsed(!isNavbarCollapsed);
     }
 
     const navigate = useNavigate();
 
-    
     return (
         <nav className='navbar navbar-expand-lg px-5-md px-3-sm fixed-top' style={{color: 'green'}}>
             <div className='container-fluid'>
@@ -20,8 +26,8 @@ const Navbar = () => {
                     <img src={icon} alt='logo' width='30' height='30' className='d-inline-block align-text-center me-2' />
                     ATR Skin Care
                 </Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
-                <div id='navbarSupportedContent' className='collapse navbar-collapse'>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleNavbarToggle}><span className="navbar-toggler-icon"></span></button>
+                <div id='navbarSupportedContent' className={`collapse navbar-collapse ${isNavbarCollapsed ? '' : 'show'}`}>
                     <ul className='navbar-nav gap-2 text-center ms-auto'>
                         {/* nav items */}
                         <li className={`nav-item ${select === 'home' ? 'active' : ''}`} onClick={() => handleItemClick('home')}>
@@ -48,9 +54,9 @@ const Navbar = () => {
                     </ul>
                     {/* Buttons */}
                     <form className='d-flex justify-content-center gap-3 p-2'>
-                        <Link to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
-                        <Link to='/' className=' px-1 nav-button'><IconPark path={'mdi:bell'} size={24}/></Link>
-                        <Link to='/user-profile' className=' px-1 nav-button'><IconPark path={'mingcute:user-4-fill'} size={24}/></Link>
+                        <Link onClick={handleNavbarToggle} to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
+                        <Link onClick={handleNavbarToggle} to='/' className=' px-1 nav-button'><IconPark path={'mdi:bell'} size={24}/></Link>
+                        <Link onClick={handleNavbarToggle} to='/user-profile' className=' px-1 nav-button'><IconPark path={'mingcute:user-4-fill'} size={24}/></Link>
                     </form>
                 </div>
             </div>
