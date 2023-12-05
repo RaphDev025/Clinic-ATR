@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import icon from 'assets/logo/ATR Skin Care Logo.png'
 import { IconPark } from 'assets/SvgIcons'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [select, setSelected] = useState('home')
@@ -10,6 +10,9 @@ const Navbar = () => {
         setSelected(state)
     }
 
+    const navigate = useNavigate();
+
+    
     return (
         <nav className='navbar navbar-expand-lg px-5-md px-3-sm fixed-top' style={{color: 'green'}}>
             <div className='container-fluid'>
@@ -47,7 +50,7 @@ const Navbar = () => {
                     <form className='d-flex justify-content-center gap-3 p-2'>
                         <Link to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
                         <Link to='/' className=' px-1 nav-button'><IconPark path={'mdi:bell'} size={24}/></Link>
-                        <Link to='/auth/user-login' className=' px-1 nav-button'><IconPark path={'mingcute:user-4-fill'} size={24}/></Link>
+                        <Link to='/user-profile' className=' px-1 nav-button'><IconPark path={'mingcute:user-4-fill'} size={24}/></Link>
                     </form>
                 </div>
             </div>

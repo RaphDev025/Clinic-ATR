@@ -129,7 +129,7 @@ const updateUserPassword = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-    
+        console.log(user)
         // Update the password
         user.password = req.body.newPassword; // Assuming your user model has a 'password' field
     

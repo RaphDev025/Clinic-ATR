@@ -39,7 +39,7 @@ const Update = () => {
   }
 
   return (
-    <section className='p-5 gap-5 container'>
+    <section className='articles'>
       <GradientHeader title={'Recently Posted'} />
       {loading ? (
         <div className='d-flex gap-3 p-5'>
@@ -50,17 +50,17 @@ const Update = () => {
       ) : (
         <>
           {news && news.map((update) => (
-            <div key={update._id} className='p-3 gap-5 d-flex rounded-4 transparent-container bg-light' style={{height: '500px'}}>
-              <div className='rounded-3 p-4 bg-success d-flex justify-content-center align-items-center w-50'>
-                <img src={update.post_img || filler} alt='blog' height={'100%'} />
+            <div key={update._id} className='update-card rounded-4 transparent-container bg-light'>
+              <div className='rounded-3 img-container bg-success'>
+                <img src={update.post_img || filler} alt='blog' className='article-img' />
               </div>
-              <div className='py-3 pe-3 h-100'>
+              <div className='desc pe-3'>
                 <div className='border-top border-bottom border-success border-3 py-2' style={{height: '85%'}}>
                   <h2 className='mb-3 fw-bold'>{update.title}</h2>
                   <p style={{fontSize: '12px'}}><BsClockFill className='text-success'/> {update.createdAt && format(new Date(update.createdAt), 'E, MMMM do yyyy, h:mm:ss a')}</p>
                   <p className='trunc'>{update.description}</p>
                 </div>
-                <div className='gap-3 d-flex pt-4'>
+                <div className='gap-3 controls'>
                   <button className='btn btn-outline-success' onClick={handleSubmit}><BsBookFill /> Read</button>
                   <FacebookShareButton url={`https://clinic-atr-server-inky.vercel.app/newsfeed`} quote={'Check what`s Latest'} hashtag={'#ATRSkinCareClinic'}>
                     <button className='btn btn-outline-success'><BiShare className='flip' /> Share</button>

@@ -138,7 +138,7 @@ const UserCart = () => {
     const handleDeleteItem = async (itemId) => {
         // Make an API call to delete the item from the cart in the database
         try {
-            await fetch(`https://clinic-api-two.vercel.app/api/cart/${itemId}`, {
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/cart/${itemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const UserCart = () => {
             setCart((prevCart) => prevCart.filter((item) => item._id !== itemId));
             setSelectedItems((prevSelectedItems) => prevSelectedItems.filter((id) => id !== itemId));
         } catch (error) {
-            console.error('Error deleting item from the cart:', error);
+            console.log('Error deleting item from the cart:', error);
         }
     };
     
@@ -159,7 +159,7 @@ const UserCart = () => {
             <section className='container-fluid p-3 mt-5 overflow-y-auto' style={{marginBottom: '60px'}}>
                 <GradientHeader title={'My Cart'} />
                 <div className='p-3 container d-flex flex-column'>
-                    <div className='d-flex gap-2 bg-light border border-1 p-2 px-5 rounded-2' style={{ fontSize: '12px' }}>
+                    <div className='table-header gap-2 bg-light border border-1 p-2 px-5 rounded-2' style={{ fontSize: '12px' }}>
                         <span className='w-100 m-0 text-center fw-bold'>Product</span>
                         <span className='w-100 m-0 text-center fw-bold ps-5'>Unit Price</span>
                         <span className='w-100 m-0 text-center fw-bold pe-4'>Quantity</span>
@@ -173,6 +173,7 @@ const UserCart = () => {
                         ) : (
                             cartItemsWithProductInfo && cartItemsWithProductInfo.length > 0 ? (
                                 cartItemsWithProductInfo?.map((item) => (
+                                    <>
                                     <div className='rounded-2 p-3 px-2 align-items-center border border-1 d-flex w-100' style={{fontSize: '12px'}} key={item._id}>
                                         <input type='checkbox' checked={selectedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
                                         
@@ -194,6 +195,29 @@ const UserCart = () => {
                                             <IconPark path={'mdi:trash-can-outline'} size={23} />
                                         </button>
                                     </div>
+                                    
+                                    <div className='rounded-2 p-3 px-2 align-items-center border border-1 d-flex w-100' style={{fontSize: '12px'}} key={item._id}>
+                                        <input type='checkbox' checked={selectedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
+                                        
+                                        <div className='w-100 d-flex gap-3 align-items-center'>
+                                            <img src={item.product?.product_img} width={'60px'} alt={item.product?.item_name} />
+                                            <span className='m-0 text-center'>{item.product?.item_name}</span>
+                                        </div>
+                                        
+                                        <span className='m-0 w-100 text-center'>Php {item.product?.unit_price}.00</span>
+                                        <div className='d-flex'>
+                                            <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleDecrease(item._id)} ><IconPark path={'ic:round-minus'} /></button>
+                                            <input type='number' min={1} className='text-center bg-light rounded-3 p-1' style={{width: '50px'}} value={item.qty} onChange={(e) => handleQuantityChange(item._id, e.target.value)} />
+                                            <button type='button' className='btn btn-sm btn-outline-secondary' onClick={() => handleIncrease(item._id)} ><IconPark path={'ic:round-plus'} /></button>
+                                        </div>
+                                        <span className='m-0 w-100 text-center'>Php {item.product?.unit_price * item.qty}.00</span>
+                                        <span className='m-0 w-100 text-center'>{item.courier}</span>
+                                        <span className='m-0 w-100 text-center text-success'>{item.shipping} <IconPark size={24} path={item.shipping === 'For Delivery' ? 'tabler:truck-delivery' : 'icon-park-outline:delivery'} /></span>
+                                        <button type='button' className='btn btn-sm btn-outline-danger' onClick={() => handleDeleteItem(item._id)}>
+                                            <IconPark path={'mdi:trash-can-outline'} size={23} />
+                                        </button>
+                                    </div>
+                                    </>
                                 ))
                             ) : (
                                 <div className="text-center">

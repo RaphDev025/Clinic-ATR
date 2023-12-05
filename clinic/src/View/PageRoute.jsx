@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar } from 'Components'
 import { Routes, Route } from 'react-router-dom'
-import { LandingPage, NewsFeedPage, FeaturedPage, ViewItem, AboutPage, ContactPage, ServicePage, TestimonyPage, UserCart } from 'Pages'
+import { LandingPage, NewsFeedPage, FeaturedPage, UserProfile, ViewItem, AboutPage, ContactPage, ServicePage, TestimonyPage, UserCart } from 'Pages'
 import { LoginPage, UserRegistration, ForgotPassword } from 'Auth'
 
 const PageRoute = () => {
@@ -18,6 +18,7 @@ const PageRoute = () => {
             <Route path='/view-item' element={<ViewItem />} />
             <Route path='/cart' element={<UserCart />} />
             <Route path='/contact' element={<ContactPage />} />
+            <Route path='/user-profile' element={<UserProfile />} />
             <Route path='/auth/user-login' element={<LoginPage />} />
             <Route path='/auth/register' element={<UserRegistration />} />
             <Route path='/auth/forgot-password' element={<ForgotPassword />} />

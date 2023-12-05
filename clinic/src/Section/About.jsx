@@ -2,16 +2,16 @@ import React from 'react'
 import {GradientHeader} from 'Components'
 import logo from 'assets/extra/DOOR.png'
 
-
+ 
 const About = () => {
   return (
-    <section className='p-5 d-flex justify-content-center align-items-center flex-column'>
+    <section className='container-about'>
       <GradientHeader title={'About Us'} />
-      <div className='container px-5 py-2 d-flex justify-content-center align-items-center'>
+      <div className='about'>
         <div className='text-center'>
-          <img src={logo} alt='logo' width='60%' />
+          <img src={logo} alt='logo' className='rounded-5' width='60%' />
         </div> 
-        <p className='col-7'>
+        <p className='description'>
           Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
           It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
