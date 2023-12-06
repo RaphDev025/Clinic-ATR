@@ -27,16 +27,22 @@ const Navbar = () => {
         // Function to fetch notifications data
         const fetchNotifications = async () => {
             try {
-                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
+                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification')
+                const response2 = await fetch(`https://clinic-atr-server-inky.vercel.app/api/notification/user/${user.user_name}`)
         
                 if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status}`);
                 }
         
                 const data = await response.json();
+                const data2 = await response2.json();
                 // Filter notifications for the admin user
-                const adminNotifications = data.filter(notification => notification.to === 'customer');
-                setNotifications(adminNotifications);
+                const adminNotifications = data.filter(notification => notification.to === 'customer' )
+                
+                const mergedNotifications = [...data2, ...adminNotifications];
+                
+                // Update state with merged notifications
+                setNotifications(mergedNotifications);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }

@@ -172,9 +172,9 @@ const UserCart = () => {
                             <Skeleton count={5} height={50} />
                         ) : (
                             cartItemsWithProductInfo && cartItemsWithProductInfo.length > 0 ? (
-                                cartItemsWithProductInfo?.map((item) => (
+                                cartItemsWithProductInfo?.map((item, indx) => (
                                     <>
-                                    <div className='cart-items rounded-2 p-3 px-2 border border-1 w-100' style={{fontSize: '12px'}} key={item._id}>
+                                    <div className='cart-items rounded-2 p-3 px-2 border border-1 w-100' style={{fontSize: '12px'}} key={indx}>
                                         <input type='checkbox' checked={selectedItems.includes(item._id)} onChange={() => handleCheckboxChange(item._id)} />
                                         
                                         <div className='w-100 d-flex gap-3 align-items-center'>

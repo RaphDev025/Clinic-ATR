@@ -8,6 +8,23 @@ const getNotification = async (req, res) => {
     res.status(200).json(notif)
 }
 
+// get notifications by user_name
+const getNotificationsByUser = async (req, res) => {
+    const { user_name } = req.query;
+
+    try {
+        if (!user_name) {
+            return res.status(400).json({ error: 'User name is required in the query parameter' });
+        }
+
+        const notif = await Notif.find({ to: user_name }).sort({ createdAt: -1 }).limit(5);
+
+        res.status(200).json(notif);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 // create user
 const createNotification = async (req, res) => {
     const {to, from, content, isRead} = req.body
@@ -38,6 +55,7 @@ const updateNotification = async (req, res) => {
 
 module.exports = {
     getNotification,
+    getNotificationsByUser,
     updateNotification,
     createNotification,
 }

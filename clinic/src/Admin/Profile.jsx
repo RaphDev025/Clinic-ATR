@@ -34,6 +34,8 @@ const Profile = () => {
                 phone: user.phone || ''
                 // Add more fields as needed
             });
+        } else {
+            navigate('/')
         }
     }, [user]);
 

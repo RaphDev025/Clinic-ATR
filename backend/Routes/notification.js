@@ -1,9 +1,11 @@
 const express = require('express')
-const { getNotification, createNotification, updateNotification } = require('../Controllers/NotificationController')
+const { getNotification, createNotification, getNotificationsByUser, updateNotification } = require('../Controllers/NotificationController')
 
 const router = express.Router()
 
 router.get('/', getNotification)
+
+router.get('/user/:user_name', getNotificationsByUser);
 
 router.patch('/:id', updateNotification)
 

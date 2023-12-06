@@ -82,9 +82,10 @@ const AddToCart = () => {
     console.log(json);
 
     if (!response.ok) {
-      alert('Cart Item Not Uploaded');
+      alert('Cart Item Not Uploaded')
     } else {
       // Send notification to admin
+      alert('Cart Item Uploaded')
     const adminNotification = {
       to: 'admin', // Specify the admin's identifier or address
       from: `${item.user_name}`,
@@ -107,8 +108,8 @@ const AddToCart = () => {
     // Send notification to user (if shipping option is 'For Pick-Up')
     if (item.shipping === 'For Pick-up') {
       const userPickupNotification = {
-        to: item.user_name, // Assuming the user identifier or address
-        from: item.user_name,
+        to: `${item.user_name}`, // Assuming the user identifier or address
+        from: `${item.user_name}`,
         content: `Your order needs to be picked up after 3 days.`,
       };
 
@@ -129,7 +130,7 @@ const AddToCart = () => {
 
     // Reset the item state after submission
     setItem({
-      user_name: user.first_name,
+      user_name: user.user_name,
       phone: user.phone,
       address: user.address,
       user_id: null,
