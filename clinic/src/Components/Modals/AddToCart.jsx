@@ -84,8 +84,48 @@ const AddToCart = () => {
     if (!response.ok) {
       alert('Cart Item Not Uploaded');
     } else {
-      alert('Cart Item Uploaded');
+      // Send notification to admin
+    const adminNotification = {
+      to: 'admin', // Specify the admin's identifier or address
+      from: `${item.user_name}`,
+      content: `${item.user_name} has created a new Order Transaction!`,
+    };
+
+    // Assuming there's an API endpoint for sending notifications
+    const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+      method: 'POST',
+      body: JSON.stringify(adminNotification),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!adminNotificationResponse.ok) {
+      console.error('Error sending notification to admin');
     }
+
+    // Send notification to user (if shipping option is 'For Pick-Up')
+    if (item.shipping === 'For Pick-up') {
+      const userPickupNotification = {
+        to: item.user_name, // Assuming the user identifier or address
+        from: item.user_name,
+        content: `Your order needs to be picked up after 3 days.`,
+      };
+
+      // Assuming there's an API endpoint for sending notifications
+      const userPickupNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+        method: 'POST',
+        body: JSON.stringify(userPickupNotification),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!userPickupNotificationResponse.ok) {
+        console.error('Error sending pickup notification to user');
+      }
+    }
+  }
 
     // Reset the item state after submission
     setItem({

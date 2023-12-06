@@ -3,25 +3,6 @@ const Schema = mongoose.Schema
 
 const phoneRegex = /^(09|\+639)\d{9}$/;
 
-const NotificationScheme = new Schema({
-    to: {
-        type: String,
-        required: true,
-    },
-    from: {
-        type: String,
-        required: true,
-    },
-    content:{
-        type: String,
-        required: true, 
-    },
-    isRead: {
-        type: Boolean,
-        default: false
-    }
-})
-
 const UserSchema = new Schema({
     first_name: {
         type: String,
@@ -70,8 +51,7 @@ const UserSchema = new Schema({
             },
             message: 'Invalid phone number format'
         }
-    },
-    notifications: [NotificationScheme]
+    }
 }, { timestamps: true })
 
 // connected and created a schema model and inserted in the existing collection named user_db

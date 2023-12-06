@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Footer } from 'Components'
 import logo from 'assets/logo/ATR Skin Care Logo.png'
 import { Link } from 'react-router-dom'
@@ -6,9 +6,57 @@ import { handleActiveItem, iconPath } from 'Utils/handlingFunctions'
 import { IconPark } from 'assets/SvgIcons'
 
 const Aside = ({ props }) => {
-    const [item, setItem] = useState('dashboard');
+    const [item, setItem] = useState('dashboard')
+    const [notifications, setNotifications] = useState([])
 
+    useEffect(() => {
+        // Function to fetch notifications data
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
+        
+                if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status}`);
+                }
+        
+                const data = await response.json();
+                setNotifications(data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+        // Call the fetchNotifications function when the component mounts
+        fetchNotifications();
+    }, [])
+
+    const handleNotificationClick = async (notificationId) => {
+        try {
+          // Send API request to mark the isRead field as true
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/notification/${notificationId}`, {
+                method: 'PATCH', // Assuming your API uses PUT for updating data
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ isRead: true }),
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Failed to mark notification as read: ${response.status}`);
+            }
+        
+            // Update the local state to reflect the change
+            setNotifications(prevNotifications =>
+                prevNotifications.map(notification =>
+                notification._id === notificationId ? { ...notification, isRead: true } : notification
+                )
+            );
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+    };
+    
     return (
+        <>
         <aside className={`${props} position-fixed top-0 left-0 bottom-0 py-2 px-1 gap-5 d-flex align-items-center flex-column admin-side`}>
             <div className='d-flex flex-column justify-content-center align-items-center text-light'>
                 <img src={logo} width={'50px'} alt='logo' />
@@ -63,18 +111,6 @@ const Aside = ({ props }) => {
                         Profile
                     </Link>
                 </li>
-                {/* <li className={`list-itm ${item === 'setting' ? 'list-active' : ''} px-2 py-2 rounded-2`} onClick={() => handleActiveItem('setting', setItem)}>
-                    <Link to='profile' className='gap-2 text-decoration-none d-flex align-items-center fw-medium'>
-                        <IconPark path={iconPath(item, 'setting', 'bi:gear-fill', 'octicon:gear-16')} size={30} />
-                        Settings
-                    </Link>
-                </li>
-                <li className='list-itm px-2 py-2 rounded-2' onClick={() => handleActiveItem('logout', setItem)}>
-                    <Link to='meter-reading' className='gap-2 text-decoration-none d-flex align-items-center fw-medium'>
-                        <IconPark path={iconPath(item, 'logout', 'simple-line-icons:logout', 'simple-line-icons:logout')} size={30} />
-                        Logout
-                    </Link>
-                </li> */}
             </ul>
 
             <Footer props='position-absolute bottom-0 end-0'>
@@ -82,6 +118,30 @@ const Aside = ({ props }) => {
                 <strong className='store'> ATR Skin Care & Pharmacy Inc.</strong>
             </Footer>
         </aside>
+        <header id='header' className='position-fixed top-0 end-0 p-2 d-flex justify-content-end align-items-center'>
+            <div className='d-flex justify-content-end align-items-center pe-5 gap-3'>
+                <div className="dropdown dropstart">
+                    <Link className=' px-1 nav-button' data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
+                        <IconPark path={iconPath(item, 'notif', 'mingcute:notification-fill', 'mingcute:notification-fill')} size={20} />
+                    </Link>
+                    <ul className="dropdown-menu">
+                    {notifications && notifications.length > 0 ? (
+                        notifications.map((notify) => (
+                            <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
+                            <div className='d-flex flex-column gap-2'>
+                                <p>{notify.from}</p>
+                                <p>{notify.content}</p>
+                            </div>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="dropdown-item">No notifications yet</li>
+                    )}
+                    </ul>
+                </div>
+            </div>
+        </header>
+        </>
     )
 }
 

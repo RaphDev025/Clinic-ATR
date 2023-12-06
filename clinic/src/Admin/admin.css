@@ -1,10 +1,10 @@
 #dash, #customer, #content, #order, #pickup, #product, #profile{
-    padding: 20px 10px 0px 170px;
+    padding: 40px 10px 0px 170px;
     background: linear-gradient(#000000, #4E4C4C);
 }
 .opaque-background{
     background: #D9D9D940;
-}
+} 
 input[type='file']{
     display: none
 }
