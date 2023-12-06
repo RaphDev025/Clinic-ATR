@@ -116,8 +116,8 @@ const Navbar = () => {
                                 notifications.map((notify) => (
                                     <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
                                     <div className='d-flex flex-column gap-2'>
-                                        <p className='m-0>{notify.content}</p>
-                                        <p className='m-0>{notify.from}</p>
+                                        <p className='m-0'>{notify.content}</p>
+                                        <p className='m-0'>{notify.from}</p>
                                     </div>
                                     </li>
                                 ))
