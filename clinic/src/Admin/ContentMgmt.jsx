@@ -45,7 +45,7 @@ const ContentMgmt = () => {
             to: 'customer', // Replace with the actual customer identifier or address
             from: 'ATR Skin Care',
             isRead: false,
-            content: 'Check out our new post',
+            content: `Check out our new post ${formData.title}`,
           };
     
           const notificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {

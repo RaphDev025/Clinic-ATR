@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 // get all users
 const getNotification = async (req, res) => {
-    const notif = await Notif.find({}).sort({createdAt: -1})
+    const notif = await Notif.find({}).sort({createdAt: -1}).limit(5)
 
     res.status(200).json(notif)
 }

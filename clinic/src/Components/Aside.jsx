@@ -131,8 +131,8 @@ const Aside = ({ props }) => {
                         notifications.map((notify) => (
                             <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
                             <div className='d-flex flex-column gap-2'>
-                                <p>{notify.content}</p>
-                                <p>{notify.from}</p>
+                                <p className='m-0 w-100 d-flex flex-wrap'>{notify.content}</p>
+                                <p className='m-0 fst-italic' style={{fontSize: '12px'}}>{notify.from}</p>
                             </div>
                             </li>
                         ))
