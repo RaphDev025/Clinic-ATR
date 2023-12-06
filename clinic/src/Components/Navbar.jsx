@@ -7,8 +7,7 @@ import { useAuth } from 'Context/AuthContext'
 const Navbar = () => {
     const [select, setSelected] = useState('home')
     const [isNavbarCollapsed, setNavbarCollapsed] = useState(true)
-    const { user } = useAuth();
-    const [notifications, setNotifications] = useState([])
+    const { user } = useAuth()
 
     const handleItemClick = (state) => {
         setSelected(state)
@@ -22,13 +21,53 @@ const Navbar = () => {
 
     const navigate = useNavigate();
 
+    const [notifications, setNotifications] = useState([])
+
     useEffect(() => {
-        // Check if user and notifications are defined before updating state
-        if (user && user.notifications) {
-          // Set notifications in local state
-            setNotifications(user.notifications);
-        }
-    }, [user]);
+        // Function to fetch notifications data
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
+        
+                if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status}`);
+                }
+        
+                const data = await response.json();
+                setNotifications(data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+        // Call the fetchNotifications function when the component mounts
+        fetchNotifications();
+    }, [])
+
+    const handleNotificationClick = async (notificationId) => {
+        try {
+          // Send API request to mark the isRead field as true
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/notification/${notificationId}`, {
+                method: 'PATCH', // Assuming your API uses PUT for updating data
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ isRead: true }),
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Failed to mark notification as read: ${response.status}`);
+            }
+        
+            // Update the local state to reflect the change
+            setNotifications(prevNotifications =>
+                prevNotifications.map(notification =>
+                notification._id === notificationId ? { ...notification, isRead: true } : notification
+                )
+            );
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+    };
 
     return (
         <nav className='navbar navbar-expand-lg px-5-md px-3-sm fixed-top' style={{color: 'green'}}>
@@ -72,9 +111,12 @@ const Navbar = () => {
                             </Link>
                             <ul className="dropdown-menu">
                             {notifications && notifications.length > 0 ? (
-                                notifications.map((notify, index) => (
-                                    <li key={index} className="dropdown-item">
-                                    {/* Render your notification content here */}
+                                notifications.map((notify) => (
+                                    <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
+                                    <div className='d-flex flex-column gap-2'>
+                                        <p>{notify.from}</p>
+                                        <p>{notify.content}</p>
+                                    </div>
                                     </li>
                                 ))
                             ) : (

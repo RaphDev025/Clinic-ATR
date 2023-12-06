@@ -17,36 +17,62 @@ const ContentMgmt = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your form submission logic here using formData
+    
         const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/articles', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        const json = await response.json();
+    
+        if (!response.ok) {
+          alert('Article Not Uploaded');
+          console.error('Error uploading article:', json);
+          setFormData({
+            title: '',
+            description: '',
+            post_img: '',
+          });
+        } else {
+          alert('Article Uploaded');
+          console.log('Article Uploaded:', json);
+    
+          // Send notification to customer
+          const notification = {
+            to: 'customer', // Replace with the actual customer identifier or address
+            from: 'admin',
+            isRead: false,
+            content: 'Check out our new post',
+          };
+    
+          const notificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
             method: 'POST',
-            body: JSON.stringify(formData),
+            body: JSON.stringify(notification),
             headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const json = await response.json()
-
-        if(!response.ok){
-            alert('Article Not Uploaded')
-            console.log(json)
-            setFormData({
-                title: '',
-                description: '',
-                post_img: ''
-            })
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          const notificationJson = await notificationResponse.json();
+    
+          if (!notificationResponse.ok) {
+            alert('Error sending notification to customer');
+            console.error('Error sending notification:', notificationJson);
+          } else {
+            alert('Notification sent to customer');
+            console.log('Notification sent:', notificationJson);
+          }
+    
+          setFormData({
+            title: '',
+            description: '',
+            post_img: '',
+          });
         }
-        if(response.ok){
-            alert('Article Uploaded')
-            console.log(json)
-            setFormData({
-                title: '',
-                description: '',
-                post_img: ''
-            })
-        }
-    };
-
+      };
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader()
