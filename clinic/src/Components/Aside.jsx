@@ -20,7 +20,9 @@ const Aside = ({ props }) => {
                 }
         
                 const data = await response.json();
-                setNotifications(data);
+                // Filter notifications for the admin user
+                const adminNotifications = data.filter(notification => notification.to === 'admin');
+                setNotifications(adminNotifications);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }
@@ -129,8 +131,8 @@ const Aside = ({ props }) => {
                         notifications.map((notify) => (
                             <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
                             <div className='d-flex flex-column gap-2'>
-                                <p>{notify.from}</p>
                                 <p>{notify.content}</p>
+                                <p>{notify.from}</p>
                             </div>
                             </li>
                         ))

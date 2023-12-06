@@ -43,7 +43,7 @@ const ContentMgmt = () => {
           // Send notification to customer
           const notification = {
             to: 'customer', // Replace with the actual customer identifier or address
-            from: 'admin',
+            from: 'ATR Skin Care',
             isRead: false,
             content: 'Check out our new post',
           };
