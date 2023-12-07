@@ -1,24 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema, ObjectId } = mongoose
 
-const ItemsSchema = new Schema({
-    item_id:{
-        type: ObjectId,
-        unique: false
-    },
-    item_name: {
-        type: String
-    },
-    qty: {
-        type: Number,
-        default: 0
-    },
-    unit_price: {
-        type: Number,
-        default: 0
-    }, product_img: String
-})
-
 const PreOrderSchema = new Schema({
     user_name: String,
     user_id: {
@@ -48,7 +30,15 @@ const PreOrderSchema = new Schema({
         type: String,
         default: 'Pending'
     },
-    item_list : [ItemsSchema]
+    item_id: {
+        type: ObjectId
+    },
+    item_name: {
+        type: String
+    },
+    unit_price: {
+        type: Number
+    },
 }, { timestamps: true })
 
 module.exports = mongoose.model('PreOrder', PreOrderSchema, 'preorder_db') 

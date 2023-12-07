@@ -148,7 +148,6 @@ const OrderMgmt = () => {
             console.log('Error deleting item from the cart:', error);
         }
     };
-    
 
     return (
         <main id='order' className=' container-fluid  '> 
@@ -209,7 +208,7 @@ const OrderMgmt = () => {
                                             <span className='w-100 text-truncate'>Php {order.total_amount}.00</span>
                                             <span className='w-100 text-truncate'>{order.total_qty} pcs.</span>
                                             <span className='w-100 text-truncate'>{order.shipping}</span>
-                                        </button>  
+                                        </button>
                                         <div className='w-25 d-flex'>
                                             <div className="dropdown d-flex justify-content-center align-items-center w-100">
                                                 <button className={`btn w-100 btn-sm dropdown-toggle text-light ${order.status === 'Completed' ? 'bg-success' : order.status === 'In-Progress' ? 'bg-warning' : order.status === 'Pending' ? 'bg-secondary' : ''}`} type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{fontSize: '12px'}}>

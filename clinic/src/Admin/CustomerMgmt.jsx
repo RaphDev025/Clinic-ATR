@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { IconPark } from 'assets/SvgIcons'
 
 const CustomerMgmt = () => {
     const [users, setUsers] = useState(null)
@@ -51,6 +52,21 @@ const CustomerMgmt = () => {
         fetchProducts()
     }, [])
 
+    const handleDeleteItem = async (itemId) => {
+        try {
+            // Make an API call to delete the item from the cart in the database
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/users/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            setUsers((prevOrders) => prevOrders.filter((item) => item._id !== itemId));
+            console.log('Item deleted successfully');
+        } catch (error) {
+            console.log('Error deleting item from the cart:', error);
+        }
+    };
     return (
         <main id='customer' className=' container-fluid'> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4 '> 
@@ -84,12 +100,15 @@ const CustomerMgmt = () => {
                     ) : (
                         <>
                         {users && users.map((user) => (
-                            <div className='d-flex gap-3 px-3 py-2 rounded-3' key={user._id} style={{backgroundColor: '#D9D9D980'}}>
+                            <div className='d-flex gap-3 justify-content-center align-items-center px-3 py-2 rounded-3' key={user._id} style={{backgroundColor: '#D9D9D980'}}>
                                 <span className='w-100'>{user.first_name} {user.last_name}</span>
                                 <span className='w-100'>{user.user_name}</span>
                                 <span className='w-100'>{user.gender}</span>
                                 <span className='w-100'>{user.address}</span>
                                 <span className='w-100'>{user.phone}</span>
+                                <span className='w-100 text-truncate'>
+                                    <button className='btn' type='button'  onClick={() => handleDeleteItem(user._id)} > <IconPark path={'ic:outline-delete'} size={20}/></button>    
+                                </span>
                             </div>
                         ))}
                         </>

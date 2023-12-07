@@ -3,11 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from 'Context/CartContext'
 import { ItemsProvider } from 'Context/ItemsContext'
 import { AuthProvider } from 'Context/AuthContext';
+import { PreOrderProvider } from 'Context/PreOrderContext';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <PreOrderProvider>
         <CartProvider>
           <ItemsProvider>
             <div className="App w-auto">
@@ -19,6 +21,7 @@ function App() {
             </div>
           </ItemsProvider>
         </CartProvider>
+        </PreOrderProvider>
       </AuthProvider>
     </BrowserRouter>
   );

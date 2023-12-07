@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { IconPark } from 'assets/SvgIcons'
 import { useCart } from 'Context/CartContext'
 import { useAuth } from 'Context/AuthContext'
+import { usePreOrder } from 'Context/PreOrderContext';
+import { useNavigate } from 'react-router-dom';
 
 const AddToCart = () => {
   const { itemData } = useCart();
-  const { user } = useAuth();
+  const { user } = useAuth()
+  const navigate = useNavigate()
 
+  const { preOrderDetails, setDetails, resetDetails } = usePreOrder();
+  
   const [item, setItem] = useState({
     item_id: '',
     item_name: '',
@@ -21,6 +26,16 @@ const AddToCart = () => {
     user_id: null,
   });
 
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
+  const [isPreOrderEnabled, setIsPreOrderEnabled] = useState(false);
+
+  useEffect(() => {
+    setIsOutOfStock(itemData.qty === 0);
+  }, [itemData.qty]);
+
+  useEffect(() => {
+    setIsPreOrderEnabled(item.qty > itemData.qty);
+  }, [item.qty, itemData.qty]);
 
   useEffect(() => {
     // Update item_name, item_id, unit_price when itemData changes
@@ -30,13 +45,13 @@ const AddToCart = () => {
       item_id: itemData._id,
       unit_price: itemData.unit_price,
     }));
-    console.log(itemData)
+    console.log(itemData);
     // Update total_amount whenever qty or unit_price changes
     setItem((prevItem) => ({
       ...prevItem,
       total_amount: prevItem.qty * prevItem.unit_price,
     }));
-  }, [itemData, item.qty, item.unit_price]);
+  }, [itemData, item.qty, item.unit_price])
 
   // UseEffect to update user details in the item state
   useEffect(() => {
@@ -163,64 +178,32 @@ const AddToCart = () => {
   };
 
   const handlePreOrder = async () => {
-    // Add your pre-order submission logic here using formData
-    const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order', {
-      method: 'POST',
-      body: JSON.stringify(item),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    // Assuming you want to save the current item details for pre-order
+    const preOrderDetails = {
+      item_id: item.item_id,
+      item_name: item.item_name,
+      qty: item.qty,
+      unit_price: item.unit_price,
+      total_amount: item.total_amount,
+      shipping: item.shipping,
+      courier: item.courier,
+      user_name: item.user_name,
+      phone: item.phone,
+      address: item.address,
+      user_id: item.user_id,
+      // Add any other details you want to save for pre-order
+    };
+    console.log('PreOrder:', preOrderDetails)
+    // Save the pre-order details using the setDetails function from usePreOrder
+    setDetails(preOrderDetails);
+    navigate('/confirmation/pre-order')
+    // Now, you can use preOrderDetails wherever you need within this component
+    // or in other components that use usePreOrder hook
   
-    const json = await response.json();
-    console.log(json);
+    // Perform any other logic or API requests related to pre-order
+    // ...
   
-    if (!response.ok) {
-      alert('Pre-Order Item Not Uploaded');
-    } else {
-      // Send notification to admin
-      alert('Pre-Order Item Uploaded');
-      const adminNotification = {
-        to: 'admin', // Specify the admin's identifier or address
-        from: `${item.user_name}`,
-        content: `${item.user_name} has created a new Pre-Order Transaction!`,
-      };
-  
-      // Assuming there's an API endpoint for sending notifications
-      const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
-        method: 'POST',
-        body: JSON.stringify(adminNotification),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!adminNotificationResponse.ok) {
-        console.error('Error sending notification to admin');
-      }
-  
-      // Send notification to user
-      const userPreOrderNotification = {
-        to: `${item.user_name}`, // Assuming the user identifier or address
-        from: `${item.user_name}`,
-        content: `Thank you for your Pre-Order! We will notify you once the product is available.`,
-      };
-  
-      // Assuming there's an API endpoint for sending notifications
-      const userPreOrderNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
-        method: 'POST',
-        body: JSON.stringify(userPreOrderNotification),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!userPreOrderNotificationResponse.ok) {
-        console.error('Error sending pre-order notification to user');
-      }
-    }
-  
-    // Reset the item state after submission
+    // Optionally, you can reset the item state or perform any other cleanup
     setItem({
       user_name: user.user_name,
       phone: user.phone,
@@ -233,7 +216,9 @@ const AddToCart = () => {
       shipping: '',
       courier: '',
     });
-};
+  };
+  
+  
 
   return (
     <div className={`modal fade`} id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={true}>
@@ -302,10 +287,10 @@ const AddToCart = () => {
                 </div>
               </div>
               <div className="py-2 px-0 d-flex flex-column modal-footer gap-2">
-                <button type="submit" data-bs-dismiss="modal" className={`w-100 btn ${itemData.qty === 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
+                <button type="submit" data-bs-dismiss="modal" className={`w-100 btn ${isOutOfStock ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} />
                 </button>
-                <button type="button" onClick={handlePreOrder} data-bs-dismiss="modal" className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
+                <button type="button" onClick={handlePreOrder} data-bs-dismiss="modal" className={`w-100 btn ${isPreOrderEnabled ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Pre-Order <IconPark path={'ph:basket-bold'} size={18} />
                 </button>
               </div>

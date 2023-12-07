@@ -47,12 +47,11 @@ const countPending = async ( req, res ) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-
 // Create 
 const createOrder = async (req, res) => {
-    const { total_qty, total_amount, shipping, courier, item_list, status, user_name, user_id, address, phone } = req.body
+    const { user_id, user_name, phone, address, shipping, courier, total_amount, total_qty, item_id, item_name, unit_price} = req.body
     try{
-        const order = await PreOrder.create({ total_qty, total_amount, shipping, courier, item_list, status, user_name, user_id, address, phone })
+        const order = await PreOrder.create({ user_id, user_name, phone, address, shipping, courier, total_amount, total_qty, item_id, item_name, unit_price})
         res.status(200).json(order)
     }catch(error){
         res.status(400).json({error: error.message})
