@@ -7,7 +7,8 @@ const CreateProductModal = () => {
         item_name: '',
         qty: 0,
         unit_price: 0,
-        product_img: ''
+        product_img: '',
+        description: ''
     })
 
     const handleChange = (e) => {
@@ -36,7 +37,8 @@ const CreateProductModal = () => {
             setFormData({
                 item_name: '',
                 qty: 0,
-                unit_price: 0
+                unit_price: 0,
+                description: ''
             })
         }
         if(response.ok){
@@ -45,7 +47,8 @@ const CreateProductModal = () => {
             setFormData({
                 item_name: '',
                 qty: 0,
-                unit_price: 0
+                unit_price: 0,
+                description: ''
             })
         }
     }
@@ -105,6 +108,10 @@ const CreateProductModal = () => {
                                     <input onChange={(e) => handleFileUpload(e)} type='file' lable='Image' className='p-2 rounded-3' id='product_img' name='image-upload' accept='.jpeg, .png, .jpg' />
                                 </div>
                                 <span style={{fontSize: '12px'}}>Click to Upload Product Image <br /> Only Accepts .jpg, .png, .jpeg files and max of 100kb</span>
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                                <label htmlFor='description' >Description</label>
+                                <input type='description' onChange={handleChange} value={formData.description} id='description' className='p-2 bg-light rounded-3 w-100' placeholder='Description' required />
                             </div>
                             <div className='py-2 px-0 d-flex modal-footer justify-content-between'>
                                 <button type='button' data-bs-dismiss="modal" className='btn btn-outline-danger py-2 px-3 text-uppercase'>Cancel <IconPark path={'ic:sharp-update-disabled'} size={18} /></button>

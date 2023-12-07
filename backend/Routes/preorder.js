@@ -1,9 +1,11 @@
 const express = require('express')
-const { getOrders, deleteOrder, updateOrder, countPending, createOrder, countOrders } = require('../Controllers/PreOrderController')
+const { getOrders, deleteOrder, getSingleOrder, updateOrder, countPending, createOrder, countOrders } = require('../Controllers/PreOrderController')
 
 const router = express.Router()
 
 router.get('/', getOrders)
+
+router.get('/:id', getSingleOrder)
 
 router.get('/count', countOrders)
 

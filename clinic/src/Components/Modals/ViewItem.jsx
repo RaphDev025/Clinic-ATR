@@ -8,7 +8,8 @@ const ViewItem = ({ selectedItem }) => {
         item_name: '',
         qty: 0,
         unit_price: 0,
-        product_img: ''
+        product_img: '',
+        description: ''
     })
 
     useEffect(() => {
@@ -18,6 +19,7 @@ const ViewItem = ({ selectedItem }) => {
                 qty: selectedItem.qty || 0,
                 unit_price: selectedItem.unit_price || 0,
                 product_img: selectedItem.product_img || '',
+                description: selectedItem.description || '',
                 _id: selectedItem._id || null, // Make sure _id is set correctly
             });
         }
@@ -118,6 +120,10 @@ const ViewItem = ({ selectedItem }) => {
                                     <input onChange={(e) => handleFileUpload(e)} type='file' lable='Image' className='p-2 rounded-3' id='product_img' name='image-upload' accept='.jpeg, .png, .jpg' />
                                 </div>
                                 <span style={{fontSize: '12px'}}>Click to Upload Product Image <br /> Only Accepts .jpg, .png, .jpeg files and max of 100kb</span>
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                                <label htmlFor='description' >Description</label>
+                                <input type='description' onChange={handleChange} value={formData.description} id='description' className='p-2 bg-light rounded-3 w-100' placeholder='Description' required />
                             </div>
                             <div className='py-2 px-0 d-flex modal-footer justify-content-between'>
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

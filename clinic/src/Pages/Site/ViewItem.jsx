@@ -4,11 +4,13 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useCart } from 'Context/CartContext'
 import { IconPark } from 'assets/SvgIcons'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from 'Context/AuthContext'
 
 const ViewItem = () => {
     const { itemData } = useCart()
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     const [item, setItem] = useState({
         item_id: '',
@@ -17,16 +19,37 @@ const ViewItem = () => {
         unit_price: 1,
         total_amount: 0,
         shipping: '',
-        courier: ''
-    })
+        courier: '',
+        user_name: '',
+        phone: '',
+        address: '',
+        user_id: null,
+    });
 
     useEffect(() => {
         // Update item_name, item_id, unit_price when itemData changes
-        setItem((prevItem) => ({ ...prevItem, item_name: itemData.item_name, item_id: itemData._id, unit_price: itemData.unit_price, }));
+        setItem((prevItem) => ({ ...prevItem, 
+            item_name: itemData.item_name, 
+            item_id: itemData._id, 
+            unit_price: itemData.unit_price, }));
     
         // Update total_amount whenever qty or unit_price changes
-        setItem((prevItem) => ({ ...prevItem, total_amount: prevItem.qty * prevItem.unit_price, }));
+        setItem((prevItem) => ({ ...prevItem, 
+            total_amount: prevItem.qty * prevItem.unit_price, }));
     }, [itemData, item.qty, item.unit_price]);
+
+    // UseEffect to update user details in the item state
+    useEffect(() => {
+        if (user) {
+            setItem((prevItem) => ({
+                ...prevItem,
+                user_name: user.first_name, // Assuming the user object has a 'first_name' property
+                phone: user.phone,
+                user_id: user._id,
+                address: user.address,
+            }));
+        }
+    }, [user])
 
     const handleDecrement = () => { 
         setItem((prevItem) => ({ ...prevItem, qty: Math.max(1, prevItem.qty - 1) }))
@@ -55,31 +78,142 @@ const ViewItem = () => {
         const json = await response.json()
         console.log(json)
 
-        if(!response.ok){
-            alert('Cart Item Not Uploaded')
-            setItem({
-                item_name: '',
-                qty: 1,
-                unit_price: 1,
-                total_amount: 0,
-                shipping: '',
-                courier: ''
-            })
-        }
-        if(response.ok){
-            alert('Cart Item Uploaded')
-            setItem({
-                item_name: '',
-                qty: 1,
-                unit_price: 1,
-                total_amount: 0,
-                shipping: '',
-                courier: ''
-            })
-            navigate('/featured')
-        }
+        if (!response.ok) {
+      alert('Cart Item Not Uploaded')
+    } else {
+      // Send notification to admin
+      alert('Cart Item Uploaded')
+    const adminNotification = {
+      to: 'admin', // Specify the admin's identifier or address
+      from: `${item.user_name}`,
+      content: `${item.user_name} has created a new Order Transaction!`,
+    };
+
+    // Assuming there's an API endpoint for sending notifications
+    const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+      method: 'POST',
+      body: JSON.stringify(adminNotification),  
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!adminNotificationResponse.ok) {
+      console.error('Error sending notification to admin');
     }
 
+    // Send notification to user (if shipping option is 'For Pick-Up')
+    if (item.shipping === 'For Pick-up') {
+      const userPickupNotification = {
+        to: `${item.user_name}`, // Assuming the user identifier or address
+        from: `${item.user_name}`,
+        content: `Your order needs to be picked up after 3 days.`,
+      };
+
+      // Assuming there's an API endpoint for sending notifications
+      const userPickupNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+        method: 'POST',
+        body: JSON.stringify(userPickupNotification),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(userPickupNotification) 
+      if (!userPickupNotificationResponse.ok) {
+        console.log('Error sending pickup notification to user')
+      }
+    }
+  }
+
+    // Reset the item state after submission
+    setItem({
+      user_name: user.user_name,
+      phone: user.phone,
+      address: user.address,
+      user_id: null,
+      item_name: '',
+      qty: 1,
+      unit_price: 1,
+      total_amount: 0,
+      shipping: '',
+      courier: '',
+    });
+    }
+
+    const handlePreOrder = async () => {
+        // Add your pre-order submission logic here using formData
+        const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order', {
+          method: 'POST',
+          body: JSON.stringify(item),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      
+        const json = await response.json();
+        console.log(json);
+      
+        if (!response.ok) {
+          alert('Pre-Order Item Not Uploaded');
+        } else {
+          // Send notification to admin
+          alert('Pre-Order Item Uploaded');
+          const adminNotification = {
+            to: 'admin', // Specify the admin's identifier or address
+            from: `${item.user_name}`,
+            content: `${item.user_name} has created a new Pre-Order Transaction!`,
+          };
+      
+          // Assuming there's an API endpoint for sending notifications
+          const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+            method: 'POST',
+            body: JSON.stringify(adminNotification),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (!adminNotificationResponse.ok) {
+            console.error('Error sending notification to admin');
+          }
+      
+          // Send notification to user
+          const userPreOrderNotification = {
+            to: `${item.user_name}`, // Assuming the user identifier or address
+            from: `${item.user_name}`,
+            content: `Thank you for your Pre-Order! We will notify you once the product is available.`,
+          };
+      
+          // Assuming there's an API endpoint for sending notifications
+          const userPreOrderNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+            method: 'POST',
+            body: JSON.stringify(userPreOrderNotification),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (!userPreOrderNotificationResponse.ok) {
+            console.error('Error sending pre-order notification to user');
+          }
+        }
+      
+        // Reset the item state after submission
+        setItem({
+          user_name: user.user_name,
+          phone: user.phone,
+          address: user.address,
+          user_id: null,
+          item_name: '',
+          qty: 1,
+          unit_price: 1,
+          total_amount: 0,
+          shipping: '',
+          courier: '',
+        });
+    };
+    
     return (
         <main className='container-fluid bg-main d-flex pt-2 p-0 m-0 vh-100'>
             <section className='container-fluid p-3 mt-5 overflow-y-auto' >
@@ -94,7 +228,7 @@ const ViewItem = () => {
                             <p className='m-0 card-text text-success fw-medium fs-6'>Selling at: P {item.unit_price}.00</p>
                             <div className='d-flex justify-content-between text-dark'>
                                 <p className='m-0'>Best Seller</p>
-                                <p className='m-0'>Sold</p>
+                                <p className='m-0'>{itemData.soldCount} Sold</p>
                             </div>
                             <div className='d-flex flex-column item-qty'>
                                 <h6 className='fw-bold text-dark'>Quantity</h6>
@@ -128,10 +262,11 @@ const ViewItem = () => {
                         </div>
                         <div className='d-flex gap-3 w-100'>
                             <button type='submit' style={{fontSize: '12px'}} className={`w-100 btn ${itemData.qty === 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} /></button>
-                            <button type='submit' style={{fontSize: '12px'}} className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Pre-Order <IconPark path={'ph:basket-bold'} size={18} /></button>
+                            <button type='button' onClick={handlePreOrder} style={{fontSize: '12px'}} className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>Pre-Order <IconPark path={'ph:basket-bold'} size={18} /></button>
                         </div>
                     </div>
                 </form>
+                <p className='px-5'>Description: {itemData.description}</p>
             </section>
         </main>
     )

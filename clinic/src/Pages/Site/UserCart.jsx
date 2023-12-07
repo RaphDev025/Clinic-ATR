@@ -29,8 +29,9 @@ const UserCart = () => {
         const selectedItemsData = cartItemsWithProductInfo.filter(
         (item) => selectedItems.includes(item._id)
         );
+        console.log(selectedItemsData)
         addItems(selectedItemsData);
-        console.log(selectedItemsData);
+        console.log('Selected Items: ',selectedItemsData);
         // // Navigate to the checkout page
         navigate('/confirmation/order');
     };

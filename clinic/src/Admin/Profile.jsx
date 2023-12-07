@@ -16,7 +16,8 @@ const Profile = () => {
         password: '',
         gender: '',
         address: '',
-        phone: ''
+        phone: '',
+        profile: ''
         // Add more fields as needed
     })
 
@@ -31,9 +32,11 @@ const Profile = () => {
                 email: user.email || '',
                 gender: user.gender || '',
                 address: user.address || '',
-                phone: user.phone || ''
+                phone: user.phone || '',
+                profile: user.profile || '',
                 // Add more fields as needed
             });
+            console.log(user)
         } else {
             navigate('/')
         }
@@ -119,10 +122,10 @@ const Profile = () => {
                     <form onSubmit={handleSave} >
                         <div className='d-flex gap-3'>
                             <div className='d-flex flex-column w-50'>
-                                <label htmlFor='post_img' className='p-4 w-100 rounded-5 bg-secondary'>
-                                    <img alt={vector} width={'100%'} src={userDetails.post_img || vector} />
+                                <label htmlFor='profile' className='p-4 w-100 rounded-5 bg-secondary'>
+                                    <img alt={vector} width={'100%'} src={userDetails.profile || vector} />
                                 </label>
-                                <input onChange={(e) => handleFileUpload(e)} type='file' lable='Image' className='p-2 rounded-3' id='post_img' name='image-upload' accept='.jpeg, .png, .jpg' />
+                                <input onChange={(e) => handleFileUpload(e)} type='file' lable='Image' className='p-2 rounded-3' id='profile' name='image-upload' accept='.jpeg, .png, .jpg' />
                             </div>
                             <div className='d-flex flex-column justify-content-end w-100'>
                                 <label htmlFor='first_name'>First Name</label>

@@ -7,6 +7,27 @@ const getOrders = async (req, res) => {
     res.status(200).json(orders)
 }
 
+const getSingleOrder = async (req, res) => {
+    const { id } = req.params;
+  
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: 'Invalid order ID' });
+    }
+  
+    try {
+      const order = await PreOrder.findById(id);
+  
+      if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+  
+      res.status(200).json(order);
+    } catch (error) {
+      console.error('Error fetching single order:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
 // API function to count total documents in the User collection
 const countOrders = async (req, res) => {
     try {
@@ -70,4 +91,4 @@ const deleteOrder = async (req, res) => {
     res.status(200).json(order)
 }
 
-module.exports = { getOrders, countOrders, countPending, deleteOrder, updateOrder, createOrder }
+module.exports = { getOrders, countOrders, countPending, deleteOrder, updateOrder, createOrder, getSingleOrder };

@@ -37,7 +37,7 @@ const Featured = () => {
   return (
     <section className='p-5 gap-5 container'>
       <GradientHeader title={'Best Sellers'} />
-      <div className='p-3 gap-2 container d-flex justify-content-center align-items-center'>
+      <div className='p-3 gap-2 container best-seller'>
         {loading ? (
           // Display loading skeleton while data is being fetched
           <div className='d-flex gap-3 p-5'>
@@ -48,7 +48,7 @@ const Featured = () => {
         ) : (
           // Display actual data once fetched
           products && products.map((product) => (
-            <div key={product._id} className='m-3 d-flex flex-column align-items-center item-card rounded-3 border border-success border-3' style={{backgroundColor: '#00FF3812', height: '280px'}}>
+            <div key={product._id} className='m-3 bs-card item-card rounded-3 border border-success border-3' style={{backgroundColor: '#00FF3812', height: '280px'}}>
                 <img src={product.product_img } alt='prod' className='p-3 h-75' height='100%' />
                 <div className='card-body w-100 h-25 rounded-2 p-3 detail bg-light text-light gap-3 d-flex justify-content-between align-items-center'>
                     <div>

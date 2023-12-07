@@ -38,29 +38,63 @@ const PreOrder = () => {
     const setStatus = async (orderId, newStatus) => {
         try {
           // Send a PATCH request to update the order status
-        const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${orderId}`, {
-            method: 'PATCH',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: newStatus }),
-        });
-    
-        if (!response.ok) {
-            throw new Error('Failed to update order status');
-        }
-
-        // If the request is successful, you can update the local state to reflect the changes immediately
-        setOrders((prevOrders) =>
+        //   const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${orderId}`, {
+        //     method: 'PATCH',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ status: newStatus }),
+        //   });
+      
+        //   if (!response.ok) {
+        //     throw new Error('Failed to update order status');
+        //   }
+      
+          // If the request is successful and the status is 'Approved', handle moving the item to the 'ordering' list
+          if (newStatus === 'Approved') {
+            // Fetch the order details
+            const orderResponse = await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${orderId}`);
+            const orderDetails = await orderResponse.json();
+      
+            // Prepare the data for the 'ordering' API endpoint
+            const orderingData = {
+              user_name: orderDetails.user_name,
+              phone: orderDetails.phone,
+              address: orderDetails.address,
+              shipping: orderDetails.shipping,
+              total_amount: orderDetails.total_amount,
+              total_qty: orderDetails.total_qty,
+              item_list: orderDetails.item_list,
+            };
+      
+            // Make a POST request to add the item to the 'ordering' list
+            const orderingResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/ordering', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(orderingData),
+            });
+      
+            if (!orderingResponse.ok) {
+              console.error('Error moving item to ordering:', orderingResponse.status);
+              return;
+            }
+          }
+      
+          // If the request is successful, you can update the local state to reflect the changes immediately
+          setOrders((prevOrders) =>
             prevOrders.map((order) =>
-                order._id === orderId ? { ...order, status: newStatus } : order
+              order._id === orderId ? { ...order, status: newStatus } : order
             )
-        );
-            console.log('Order status updated successfully');
+          );
+      
+          console.log('Order status updated successfully');
         } catch (error) {
-            console.error('Error updating order status:', error.message);
+          console.error('Error updating order status:', error.message);
         }
-    }
+      };
+      
 
     return (
         <main id='order' className=' container-fluid pb-3 '> 

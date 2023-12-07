@@ -13,7 +13,7 @@ const ConfirmOrder = () => {
         user_name: user.first_name,
         phone: user.phone,
         address: user.address,
-        shipping: 'For Delivery',
+        shipping: '',
         courier: '',
         total_amount: 0,
         total_qty: 0,
@@ -21,6 +21,10 @@ const ConfirmOrder = () => {
     })
     useEffect(() => {
         handleCompute()
+        
+        console.log('Item State: ', items)
+        console.log("items: ",itemStates)
+        
     }, [])
 
     const handleCancel = () => {
@@ -49,10 +53,10 @@ const ConfirmOrder = () => {
         if(!response.ok){
             alert('Order Successful!')
             setItemStates({
-                user_name: 'Raphael',
-                phone: '09269607368',
-                address: '558 M De Jesus Street Pasay City',
-                shipping: 'For Delivery',
+                user_name: '',
+                phone: '',
+                address: '',
+                shipping: '',
                 courier: '',
                 total_amount: 0,
                 total_qty: 0,
@@ -62,17 +66,17 @@ const ConfirmOrder = () => {
         if(response.ok){
             alert('Order Successful!')
             setItemStates({
-                user_name: 'Raphael',
-                phone: '09269607368',
-                address: '558 M De Jesus Street Pasay City',
-                shipping: 'For Delivery',
+                user_name: '',
+                phone: '',
+                address: '',
+                shipping: '',
                 courier: '',
                 total_amount: 0,
                 total_qty: 0,
                 item_list: [],
             })
             handleUpdateQtyAndDelete()
-            navigate('/cart')
+            navigate('/featured')
         }
     }  
 
@@ -94,7 +98,7 @@ const ConfirmOrder = () => {
                 const updateSoldCount = currentProduct.soldCount + item.qty;
                 
                 // Send PATCH request to update product quantity
-                await fetch(`/api/products/${item.item_id}`, {
+                await fetch(`https://clinic-atr-server-inky.vercel.app/api/products/${item.item_id}`, {
                     method: 'PATCH',
                     body: JSON.stringify({ qty: updatedQty, soldCount: updateSoldCount }), // Adjust the body as needed
                     headers: {
@@ -146,14 +150,16 @@ const ConfirmOrder = () => {
             unit_price: item.unit_price,
             product_img: item.product.product_img // Assuming product_img is nested
         }))
+        const courierFromItems = items.length > 0 ? items[0].courier : ''; // Assuming courier is the same for all items
 
         setItemStates({
             ...itemStates,
             total_amount: totalAmount,
             total_qty: total_qty,
             shipping: mostCommonDeliveryOption,
-            item_list: newItems
-        })
+            courier: courierFromItems, // Set courier value from items context
+            item_list: newItems,
+        });
     }
 
     return (

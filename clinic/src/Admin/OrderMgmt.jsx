@@ -91,7 +91,7 @@ const OrderMgmt = () => {
             console.error('Error updating order status:', error.message);
         }
     }
-    const subHeaders = ['Item Code', 'Item Description', 'Quantity', 'Selling Price', 'Sub Total']
+    const subHeaders = ['Item Code', 'Item Description', 'Quantity', 'Selling Price', 'Sub Total', 'Courier']
 
     // Function to handle delete button
     const handleDeleteItem = async (itemId, orderStatus) => {
@@ -230,6 +230,7 @@ const OrderMgmt = () => {
                                                             <span className='w-100 text-truncate'>{item.qty}</span>
                                                             <span className='w-100 text-truncate'>{item.unit_price}</span>
                                                             <span className='w-100 text-truncate'>{item.unit_price * item.qty}</span>
+                                                            <span className='w-100 text-truncate'>{order.courier}</span>
                                                         </div>
                                                     ))}
                                                 </div>

@@ -18,7 +18,7 @@ const AddToCart = () => {
     user_name: '',
     phone: '',
     address: '',
-    user_id: '',
+    user_id: null,
   });
 
 
@@ -67,8 +67,6 @@ const AddToCart = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
     // Add your form submission logic here using itemWithUserDetails
     const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart', {
       method: 'POST',
@@ -95,7 +93,7 @@ const AddToCart = () => {
     // Assuming there's an API endpoint for sending notifications
     const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
       method: 'POST',
-      body: JSON.stringify(adminNotification),
+      body: JSON.stringify(adminNotification),  
       headers: {
         'Content-Type': 'application/json',
       },
@@ -122,8 +120,9 @@ const AddToCart = () => {
         },
       });
 
+      console.log(userPickupNotification) 
       if (!userPickupNotificationResponse.ok) {
-        console.error('Error sending pickup notification to user');
+        console.log('Error sending pickup notification to user')
       }
     }
   }
@@ -142,6 +141,79 @@ const AddToCart = () => {
       courier: '',
     });
   };
+
+  const handlePreOrder = async () => {
+    // Add your pre-order submission logic here using formData
+    const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order', {
+      method: 'POST',
+      body: JSON.stringify(item),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    const json = await response.json();
+    console.log(json);
+  
+    if (!response.ok) {
+      alert('Pre-Order Item Not Uploaded');
+    } else {
+      // Send notification to admin
+      alert('Pre-Order Item Uploaded');
+      const adminNotification = {
+        to: 'admin', // Specify the admin's identifier or address
+        from: `${item.user_name}`,
+        content: `${item.user_name} has created a new Pre-Order Transaction!`,
+      };
+  
+      // Assuming there's an API endpoint for sending notifications
+      const adminNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+        method: 'POST',
+        body: JSON.stringify(adminNotification),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!adminNotificationResponse.ok) {
+        console.error('Error sending notification to admin');
+      }
+  
+      // Send notification to user
+      const userPreOrderNotification = {
+        to: `${item.user_name}`, // Assuming the user identifier or address
+        from: `${item.user_name}`,
+        content: `Thank you for your Pre-Order! We will notify you once the product is available.`,
+      };
+  
+      // Assuming there's an API endpoint for sending notifications
+      const userPreOrderNotificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+        method: 'POST',
+        body: JSON.stringify(userPreOrderNotification),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!userPreOrderNotificationResponse.ok) {
+        console.error('Error sending pre-order notification to user');
+      }
+    }
+  
+    // Reset the item state after submission
+    setItem({
+      user_name: user.user_name,
+      phone: user.phone,
+      address: user.address,
+      user_id: null,
+      item_name: '',
+      qty: 1,
+      unit_price: 1,
+      total_amount: 0,
+      shipping: '',
+      courier: '',
+    });
+};
 
   return (
     <div className={`modal fade`} id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={true}>
@@ -170,7 +242,7 @@ const AddToCart = () => {
                         <IconPark path={'ic:round-plus'} />
                       </button>
                     </div>
-                    {itemData.qty === 0 ? <pre className="text-danger fst-italic m-0">*Out of Stock</pre> : ''}
+                    {itemData.qty === 0 ? <pre className="text-danger fst-italic m-0">*Out of Stock</pre> : <pre>Stocks: {itemData.qty}</pre>}
                   </div>
                   <div className="d-flex gap-2 w-100">
                     <button type="button" onClick={() => setItem({ ...item, shipping: 'For Pick-up', courier: 'None' })} className={`w-100 btn ${item.shipping === 'For Pick-up' ? 'btn-success' : 'btn-outline-success'} btn-sm`}>
@@ -213,7 +285,7 @@ const AddToCart = () => {
                 <button type="submit" data-bs-dismiss="modal" className={`w-100 btn ${itemData.qty === 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} />
                 </button>
-                <button type="submit" data-bs-dismiss="modal" className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
+                <button type="button" onClick={handlePreOrder} data-bs-dismiss="modal" className={`w-100 btn ${itemData.qty !== 0 ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Pre-Order <IconPark path={'ph:basket-bold'} size={18} />
                 </button>
               </div>
