@@ -20,7 +20,7 @@ const Navbar = () => {
     }
     useEffect(() => {
         if (user) {
-            navigate('/')
+            navigate('/featured')
         }
     }, [user]);
     const navigate = useNavigate();
