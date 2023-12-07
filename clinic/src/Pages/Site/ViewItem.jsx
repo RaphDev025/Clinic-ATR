@@ -141,7 +141,8 @@ const ViewItem = () => {
     });
     }
 
-    const handlePreOrder = async () => {
+    const handlePreOrder = async (e) => {
+        e.preventDefault();
         // Add your pre-order submission logic here using formData
         const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order', {
           method: 'POST',
@@ -180,8 +181,8 @@ const ViewItem = () => {
       
           // Send notification to user
           const userPreOrderNotification = {
-            to: `${item.user_name}`, // Assuming the user identifier or address
-            from: `${item.user_name}`,
+            to: `customer`, // Assuming the user identifier or address
+            from: `ATR Skin Care`,
             content: `Thank you for your Pre-Order! We will notify you once the product is available.`,
           };
       

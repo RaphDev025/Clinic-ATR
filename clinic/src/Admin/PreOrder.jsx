@@ -25,6 +25,7 @@ const PreOrder = () => {
                 setOrders(json)
                 setTotalOrders(jsonCount.totalOrders)
             }
+            console.log(json)
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
@@ -37,18 +38,6 @@ const PreOrder = () => {
 
     const setStatus = async (orderId, newStatus) => {
         try {
-          // Send a PATCH request to update the order status
-        //   const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${orderId}`, {
-        //     method: 'PATCH',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ status: newStatus }),
-        //   });
-      
-        //   if (!response.ok) {
-        //     throw new Error('Failed to update order status');
-        //   }
       
           // If the request is successful and the status is 'Approved', handle moving the item to the 'ordering' list
           if (newStatus === 'Approved') {
@@ -60,6 +49,7 @@ const PreOrder = () => {
             const orderingData = {
               user_name: orderDetails.user_name,
               phone: orderDetails.phone,
+              courier: orderDetails.courier,
               address: orderDetails.address,
               shipping: orderDetails.shipping,
               total_amount: orderDetails.total_amount,
@@ -88,13 +78,30 @@ const PreOrder = () => {
               order._id === orderId ? { ...order, status: newStatus } : order
             )
           );
-      
+        handleDeleteItem(orderId)
           console.log('Order status updated successfully');
         } catch (error) {
           console.error('Error updating order status:', error.message);
         }
       };
-      
+    
+    // Function to handle delete button
+    const handleDeleteItem = async (itemId) => {
+        try {
+            // Make an API call to delete the item from the cart in the database
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/pre-order/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })// If the API call is successful, update the state
+            setOrders((prevOrders) => prevOrders.filter((item) => item._id !== itemId));
+            
+            console.log('Item deleted successfully');
+        } catch (error) {
+            console.log('Error deleting item from the cart:', error);
+        }
+    };
 
     return (
         <main id='order' className=' container-fluid pb-3 '> 
@@ -161,7 +168,7 @@ const PreOrder = () => {
                                                     </ul>
                                                 </div>
                                                 <span className='w-100 text-truncate'>
-                                                    <button className='btn'><IconPark path={'ic:outline-delete'} size={20}/></button>    
+                                                <button className='btn' type='button'  onClick={() => handleDeleteItem(order._id, order.status)} > <IconPark path={'ic:outline-delete'} size={20}/></button>  
                                                 </span>
                                             </div>              
                                         </div>
