@@ -17,4 +17,20 @@ const createHistory = async (req, res) => {
     }
 }
 
-module.exports = { getHistory, createHistory }
+const deleteHistory = async (req, res) => {
+    const orderId = req.params.id; // Assuming the order ID is passed as a parameter in the URL
+    
+    try {
+        const deletedOrder = await History.findByIdAndDelete(orderId);
+
+        if (!deletedOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.status(200).json({ message: 'Order deleted successfully', deletedOrder });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { getHistory, createHistory, deleteHistory }

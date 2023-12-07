@@ -29,6 +29,24 @@ const History = () => {
         };
         fetchProducts()
     }, [])
+
+     // Function to handle delete button
+    const handleDeleteItem = async (itemId) => {
+        try {
+            // Make an API call to delete the item from the cart in the database
+            await fetch(`https://clinic-atr-server-inky.vercel.app/api/history/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })// If the API call is successful, update the state
+            setOrders((prevOrders) => prevOrders.filter((item) => item._id !== itemId));
+            
+            console.log('Item deleted successfully');
+        } catch (error) {
+            console.log('Error deleting item from the cart:', error);
+        }
+    }
     return (
         <main id='order' className=' container-fluid pb-3 vh-100'> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4 h-100'> 
@@ -45,7 +63,7 @@ const History = () => {
                                 <span className='w-100 fw-bold'>{'Type'}</span>
                             </div>
                             <div className='w-25 d-flex gap-2'>
-                                <span className='w-100 fw-bold'>{'Status'}</span>
+                                {/* <span className='w-100 fw-bold'>{'Status'}</span> */}
                                 <span className='w-100 fw-bold'>{'Action'}</span>
                             </div>
                         </div>
@@ -73,11 +91,11 @@ const History = () => {
                                                 <span className='w-100 text-truncate'>{order.shipping}</span>
                                             </button>  
                                             <div className='w-25 d-flex align-items-center'>
-                                                <span className='w-100 text-truncate'>
+                                                {/* <span className='w-100 text-truncate'>
                                                     {order.status}    
-                                                </span>
+                                                </span> */}
                                                 <span className='w-100 text-truncate'>
-                                                    <button className='btn'><IconPark path={'ic:outline-delete'} size={20}/></button>    
+                                                    <button onClick={() => handleDeleteItem(order._id)} className='btn'><IconPark path={'ic:outline-delete'} size={20}/></button>    
                                                 </span>
                                             </div>              
                                         </div>

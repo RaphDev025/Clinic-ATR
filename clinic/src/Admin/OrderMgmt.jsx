@@ -47,50 +47,68 @@ const OrderMgmt = () => {
 
     const setStatus = async (orderId, newStatus) => {
         try {
-          // Send a PATCH request to update the order status
-        const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/ordering/${orderId}`, {
-            method: 'PATCH',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: newStatus }),
-        });
+            // Send a PATCH request to update the order status
+            const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/ordering/${orderId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
     
-        if (!response.ok) {
-            throw new Error('Failed to update order status');
-        }
+            if (!response.ok) {
+                throw new Error('Failed to update order status');
+            }
     
-        // Update pendingOrders state based on the newStatus
-        if (newStatus === 'Pending') {
-            setPendingOrders((prevPendingOrders) => prevPendingOrders + 1);
-        } else if (orders.find((order) => order._id === orderId)?.status === 'Pending' && newStatus !== 'Pending') {
-            setPendingOrders((prevPendingOrders) => prevPendingOrders - 1);
-        }
-
-        // Update pendingOrders state based on the newStatus
-        if (newStatus === 'Completed') {
-            setCompleteOrders((prevPendingOrders) => prevPendingOrders + 1);
-        } else if (orders.find((order) => order._id === orderId)?.status === 'Completed' && newStatus !== 'Completed') {
-            setCompleteOrders((prevPendingOrders) => prevPendingOrders - 1);
-        }
-
-        // Update pendingOrders state based on the newStatus
-        if (newStatus === 'In-Progress') {
-            setProgressOrders((prevPendingOrders) => prevPendingOrders + 1);
-        } else if (orders.find((order) => order._id === orderId)?.status === 'In-Progress' && newStatus !== 'In-Progress') {
-            setProgressOrders((prevPendingOrders) => prevPendingOrders - 1);
-        }
-        // If the request is successful, you can update the local state to reflect the changes immediately
-        setOrders((prevOrders) =>
-            prevOrders.map((order) =>
-                order._id === orderId ? { ...order, status: newStatus } : order
-            )
-        );
+            // Update pendingOrders state based on the newStatus
+            if (newStatus === 'Pending') {
+                setPendingOrders((prevPendingOrders) => prevPendingOrders + 1);
+            } else if (orders.find((order) => order._id === orderId)?.status === 'Pending' && newStatus !== 'Pending') {
+                setPendingOrders((prevPendingOrders) => prevPendingOrders - 1);
+            }
+    
+            // Update completeOrders state based on the newStatus
+            if (newStatus === 'Completed') {
+                const orderToHistory = orders.find((order) => order._id === orderId);
+                
+                // Send a POST request to the history endpoint with the order data
+                const historyResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderToHistory),
+                });
+    
+                if (historyResponse.ok) {
+                    console.log('Order added to history successfully');
+                } else {
+                    throw new Error('Failed to add order to history');
+                }
+            } else if (orders.find((order) => order._id === orderId)?.status === 'Completed' && newStatus !== 'Completed') {
+                setCompleteOrders((prevPendingOrders) => prevPendingOrders - 1);
+            }
+    
+            // Update progressOrders state based on the newStatus
+            if (newStatus === 'In-Progress') {
+                setProgressOrders((prevPendingOrders) => prevPendingOrders + 1);
+            } else if (orders.find((order) => order._id === orderId)?.status === 'In-Progress' && newStatus !== 'In-Progress') {
+                setProgressOrders((prevPendingOrders) => prevPendingOrders - 1);
+            }
+    
+            // If the request is successful, you can update the local state to reflect the changes immediately
+            setOrders((prevOrders) =>
+                prevOrders.map((order) =>
+                    order._id === orderId ? { ...order, status: newStatus } : order
+                )
+            );
             console.log('Order status updated successfully');
         } catch (error) {
             console.error('Error updating order status:', error.message);
         }
-    }
+    };
+    
+
     const subHeaders = ['Item Code', 'Item Description', 'Quantity', 'Selling Price', 'Sub Total', 'Courier']
 
     // Function to handle delete button
