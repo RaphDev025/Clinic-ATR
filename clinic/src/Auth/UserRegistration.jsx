@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { IconPark } from 'assets/SvgIcons'
+
 
 const UserRegistration = () => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    }
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -103,7 +110,12 @@ const UserRegistration = () => {
                         </div>
                         <div className='user-inputs'>
                             <label htmlFor='password'>Password</label>
-                            <input type='password' className='p-2 rounded-3' id='password' placeholder='Password' value={formData.password} onChange={handleChange} required />
+                            <input type={showPassword ? 'text' : 'password'} className='p-2 rounded-3' id='password' placeholder='Password' value={formData.password} onChange={handleChange} required />
+                        </div>
+                        <div className='d-flex justify-content-start align-items-end'>
+                            <button type='button' className='d-flex justify-content-start btn-sm' style={{border: 'none', backgroundColor: 'transparent',  width: '300px', color: 'green'}} onClick={handleTogglePassword} >
+                                Show Password: {showPassword ? <IconPark path={'ooui:eye'} size={24}/> : <IconPark path={'mdi:eye-off'} size={24}/>}
+                            </button>
                         </div>
                     </div>
 

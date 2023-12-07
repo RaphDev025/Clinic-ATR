@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { IconPark } from 'assets/SvgIcons'
 
 const ForgotPassword = () => {
     const [userData, setUserData] = useState([]);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    }
 
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
@@ -85,11 +91,16 @@ const ForgotPassword = () => {
                     </div>
                     <div className='d-flex flex-column w-100'>
                         <label htmlFor='password'>New Password</label>
-                        <input value={formData.newPassword} onChange={handleInputChange} type='password' className='p-2 rounded-3' id='newPassword' placeholder='New Password' required />
+                        <input value={formData.newPassword} onChange={handleInputChange} type={showPassword ? 'text' : 'password'} className='p-2 rounded-3' id='newPassword' placeholder='New Password' required />
                     </div>
                     <div className='d-flex flex-column w-100'>
                         <label htmlFor='new-password'>Confirm Password</label>
-                        <input value={formData.confirmPassword} onChange={handleInputChange} type='password' className='p-2 rounded-3' id='confirmPassword' placeholder='Confirm Password' required />
+                        <input value={formData.confirmPassword} onChange={handleInputChange} type={showPassword ? 'text' : 'password'} className='p-2 rounded-3' id='confirmPassword' placeholder='Confirm Password' required />
+                    </div>
+                    <div className='d-flex justify-content-end w-100'>
+                        <button type='button' className='d-flex w-100 justify-content-end btn-sm' style={{border: 'none', backgroundColor: 'transparent', color: 'green'}} onClick={handleTogglePassword} >
+                            Show Password: {showPassword ? <IconPark path={'ooui:eye'} size={24}/> : <IconPark path={'mdi:eye-off'} size={24}/>}
+                        </button>
                     </div>
                     <div className='d-flex align-items-center w-100 justify-content-start p-0 container'>
                         <span onClick={() => navigate('/auth/user-login')} style={{cursor: 'pointer', fontSize: '16px'}} className='text-warning'>Click here to return</span>
