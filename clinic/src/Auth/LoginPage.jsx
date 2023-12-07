@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from 'assets/logo/ATR Skin Care Logo.png';
 import { useAuth } from 'Context/AuthContext'; // Import the useAuth hook
+import { IconPark } from 'assets/SvgIcons'
 
 const LoginPage = () => {
     const { login, setUser } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,7 +57,12 @@ const LoginPage = () => {
                             </div>
                             <div className='d-flex flex-column w-100'>
                                 <label htmlFor='password'>Password</label>
-                                <input type='password' className='p-2 rounded-3' id='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                <input type={showPassword ? 'text' : 'password'} className='p-2 rounded-3' id='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            </div>
+                            <div className='d-flex justify-content-end '>
+                                <button type='button' className='d-flex justify-content-end btn-sm' style={{border: 'none', backgroundColor: 'transparent',     width: '300px', color: 'green'}} onClick={handleTogglePassword} >
+                                    Show Password: {showPassword ? <IconPark path={'ooui:eye'} size={24}/> : <IconPark path={'mdi:eye-off'} size={24}/>}
+                                </button>
                             </div>
                             <div className='d-flex justify-content-start w-100'>
                                 <Link to='/auth/forgot-password' className='text-decoration-none text-warning'>
