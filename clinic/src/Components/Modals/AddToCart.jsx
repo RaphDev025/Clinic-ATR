@@ -290,7 +290,7 @@ const AddToCart = () => {
                 <button type="submit" data-bs-dismiss="modal" className={`w-100 btn ${isOutOfStock ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Add to Cart <IconPark path={'iconoir:add-to-cart'} size={18} />
                 </button>
-                <button type="button" onClick={handlePreOrder} data-bs-dismiss="modal" className={`w-100 btn ${isPreOrderEnabled ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
+                <button type="button" onClick={handlePreOrder} data-bs-dismiss="modal" className={`w-100 btn ${!isPreOrderEnabled ? 'btn-outline-secondary disabled' : 'btn-outline-success'} py-2 px-3 text-uppercase `}>
                   Pre-Order <IconPark path={'ph:basket-bold'} size={18} />
                 </button>
               </div>

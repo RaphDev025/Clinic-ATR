@@ -25,13 +25,10 @@ const ConfirmPreOrder = () => {
         unit_price: preOrderDetails.unit_price
     })
     useEffect(() => {
-        handleCompute()
-        
-        console.log('Item State: ', items)
-        console.log("items: ",itemStates)
-        
-    }, [])
-
+        if (!user) {
+            navigate('/auth/user-login')
+        }
+    }, [user]);
     const handleCancel = () => {
         resetItems()
         navigate('/cart')
@@ -39,12 +36,7 @@ const ConfirmPreOrder = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (itemStates.total_amount === 0) {
-            alert('Your order is empty.');
-            return; // Prevent form submission
-        }
-        // Ensure that handleCompute is called before submitting
-        handleCompute();
+        
         // Add your form submission logic here using formData
         const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order', {
             method: 'POST',
@@ -86,92 +78,9 @@ const ConfirmPreOrder = () => {
                 item_name: '',
                 unit_price: ''
             })
-            handleUpdateQtyAndDelete()
             navigate('/featured')
         }
     }  
-
-    const handleUpdateQtyAndDelete = async () => {
-        try {
-          // Iterate over items and update product quantity
-            for (const item of items) {
-                const response = await fetch(`https://clinic-atr-server-inky.vercel.app/api/products/${item.item_id}`);
-                const currentProduct = await response.json();
-        
-                if (!response.ok) {
-                    console.error('Error fetching product data:', currentProduct.error);
-                    // Handle error as needed
-                    continue;
-                }
-            
-                  // Calculate the new quantity (decreasing by current quantity)
-                const updatedQty = currentProduct.qty - item.qty;
-                const updateSoldCount = currentProduct.soldCount + item.qty;
-                
-                // Send PATCH request to update product quantity
-                await fetch(`https://clinic-atr-server-inky.vercel.app/api/products/${item.item_id}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ qty: updatedQty, soldCount: updateSoldCount }), // Adjust the body as needed
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-            }
-        
-            // Iterate over items and delete from cart
-            for (const item of items) {
-                const { _id: cartItemId } = item;
-        
-                // Send DELETE request to remove item from cart
-                await fetch(`https://clinic-atr-server-inky.vercel.app/api/cart/${cartItemId}`, {
-                    method: 'DELETE',
-                });
-            }
-            // Reset items context after updating and deleting
-            resetItems()
-        // Navigate to a success page or perform other actions
-        // ...
-        } catch (error) {
-            console.error('Error updating quantity and deleting items:', error);
-            // Handle error as needed
-        }
-    };  
-
-    const handleCompute = () => {
-        let totalAmount = 0, total_qty = 0
-        let deliveryOptionsCount = {
-            'For Delivery': 0,
-            'For Pickup': 0,
-        }
-
-        items.forEach(item => {
-            const subtotal = item.unit_price * item.qty;
-            totalAmount += subtotal;
-            total_qty += item.qty;
-            // Count the occurrence of each delivery option
-            deliveryOptionsCount[item.shipping]++;
-        })
-        // Determine the most common delivery option
-        const mostCommonDeliveryOption = Object.keys(deliveryOptionsCount).reduce((a, b) => deliveryOptionsCount[a] > deliveryOptionsCount[b] ? a : b);
-
-        const newItems = items.map(item => ({
-            item_name: item.item_name,
-            item_id: item.item_id,
-            qty: item.qty,
-            unit_price: item.unit_price,
-            product_img: item.product.product_img // Assuming product_img is nested
-        }))
-        const courierFromItems = items.length > 0 ? items[0].courier : ''; // Assuming courier is the same for all items
-
-        setItemStates({
-            ...itemStates,
-            total_amount: totalAmount,
-            total_qty: total_qty,
-            shipping: mostCommonDeliveryOption,
-            courier: courierFromItems, // Set courier value from items context
-            item_list: newItems,
-        });
-    }
 
     return (
         <main className='container-fluid bg-main d-flex p-0 m-0 vh-100 '>

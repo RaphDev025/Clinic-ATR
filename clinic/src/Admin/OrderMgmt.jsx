@@ -239,7 +239,7 @@ const OrderMgmt = () => {
                                                             <span className='w-100 text-truncate text-dark' key={indx}>{header}</span>
                                                         ))}
                                                     </div>
-                                                    {Array.isArray(order.item_list) &&
+                                                    {Array.isArray(order.item_list) ? (
                                                     order.item_list.map((item, i) => (
                                                         <div className='d-flex align-items-center gap-2 text-center w-100 py-1' key={i}>
                                                             <span className='w-100 text-truncate'>{item.item_id}</span>
@@ -249,7 +249,18 @@ const OrderMgmt = () => {
                                                             <span className='w-100 text-truncate'>{item.unit_price * item.qty}</span>
                                                             <span className='w-100 text-truncate'>{order.courier}</span>
                                                         </div>
-                                                    ))}
+                                                    ))
+                                                ) : (
+                                                    // Render a single row if item_list is not an array
+                                                    <div className='d-flex align-items-center gap-2 text-center w-100 py-1'>
+                                                        <span className='w-100 text-truncate'>{order.item_id}</span>
+                                                        <span className='w-100 text-truncate'>{order.item_name}</span>
+                                                        <span className='w-100 text-truncate'>{order.total_qty}</span>
+                                                        <span className='w-100 text-truncate'>{order.unit_price}</span>
+                                                        <span className='w-100 text-truncate'>{order.unit_price * order.total_qty}</span>
+                                                        <span className='w-100 text-truncate'>{order.courier}</span>
+                                                    </div>
+                                                )}
                                                 </div>
                                             </div>
                                             <div className='d-flex flex-column align-items-start w-50'>
