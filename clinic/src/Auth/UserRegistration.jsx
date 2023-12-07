@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IconPark } from 'assets/SvgIcons'
 
-
 const UserRegistration = () => {
     const [showPassword, setShowPassword] = useState(false);
 

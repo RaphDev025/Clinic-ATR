@@ -34,7 +34,9 @@ const ViewItem = ({ selectedItem }) => {
         }));
     }
 
-    const handleUpdate = async () => {
+    const handleUpdate = async (e) => {
+        e.preventDefault(); 
+        
         if (!formData._id) {
             console.error('Item ID is missing');
             return;
@@ -57,7 +59,6 @@ const ViewItem = ({ selectedItem }) => {
             } else {
                 alert('Product Updated')
                 console.log(json)
-                window.location.reload()
                 // Optionally, you can reset the form or perform other actions after a successful update
             }
         } catch (error) {

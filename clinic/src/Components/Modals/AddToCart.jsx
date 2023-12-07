@@ -30,7 +30,7 @@ const AddToCart = () => {
       item_id: itemData._id,
       unit_price: itemData.unit_price,
     }));
-
+    console.log(itemData)
     // Update total_amount whenever qty or unit_price changes
     setItem((prevItem) => ({
       ...prevItem,
@@ -66,7 +66,27 @@ const AddToCart = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+
+    // Check if the requested quantity exceeds the available stock
+    if (item.qty > itemData.qty) {
+      alert(`Error: Not enough stock available. Remaining stock: ${itemData.qty}`)
+      setItem({
+        item_id: '',
+        item_name: '',
+        qty: 1,
+        unit_price: 1,
+        total_amount: 0,
+        shipping: '',
+        courier: '',
+        user_name: '',
+        phone: '',
+        address: '',
+        user_id: null,
+      })
+      return;
+    }
+
     // Add your form submission logic here using itemWithUserDetails
     const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart', {
       method: 'POST',
@@ -223,7 +243,7 @@ const AddToCart = () => {
             <h1 className="modal-title fs-6 text-success" id="staticBackdropLabel">
               Add To Cart
             </h1>
-            <button type="button" onClick={() => setItem({ ...item, qty: 1, shipping: 'For Delivery' })} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" onClick={() => setItem({ ...item, qty: 1, shipping: '' })} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit} className="d-flex flex-column gap-2 w-100 text-success">

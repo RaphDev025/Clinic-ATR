@@ -4,10 +4,20 @@ import logo from 'assets/logo/ATR Skin Care Logo.png'
 import { Link } from 'react-router-dom'
 import { handleActiveItem, iconPath } from 'Utils/handlingFunctions'
 import { IconPark } from 'assets/SvgIcons'
+import { useAuth } from 'Context/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const Aside = ({ props }) => {
     const [item, setItem] = useState('dashboard')
     const [notifications, setNotifications] = useState([])
+    const { user } = useAuth()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/admin/dashboard')
+        }
+    }, [user])
 
     useEffect(() => {
         // Function to fetch notifications data

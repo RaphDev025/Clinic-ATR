@@ -67,6 +67,24 @@ const ViewItem = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Check if the requested quantity exceeds the available stock
+        if (item.qty > itemData.qty) {
+          alert(`Error: Not enough stock available. Remaining stock: ${itemData.qty}`)
+          setItem({
+            item_id: '',
+            item_name: '',
+            qty: 1,
+            unit_price: 1,
+            total_amount: 0,
+            shipping: '',
+            courier: '',
+            user_name: '',
+            phone: '',
+            address: '',
+            user_id: null,
+          })
+          return;
+        }
         // Add your form submission logic here using formData
         const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/cart', {
             method: 'POST',
@@ -238,7 +256,7 @@ const ViewItem = () => {
                                     <input type='number' onChange={handleQuantityChange} id='qty' min={1} value={item.qty} className='text-center bg-light rounded-3' style={{width: '50px'}} />
                                     <button type='button' className='btn btn-sm btn-outline-secondary' onClick={handleIncrement}><IconPark path={'ic:round-plus'} /></button>
                                 </div>
-                                {itemData.qty === 0 ? (<pre className='text-danger fst-italic m-0'>*Out of Stock</pre>) : ''}
+                                {itemData.qty === 0 ? <pre className="text-danger text-dark fst-italic m-0">*Out of Stock</pre> : <pre className='text-dark'>Stocks: {itemData.qty}</pre>}
                             </div>
                             <div className='d-flex gap-2 w-100'>
                                 <button type='button' onClick={() => setItem({...item, shipping: 'For Pick-up', courier: 'None'})} className={`w-100 btn ${item.shipping === 'For Pick-up' ? 'btn-success' : 'btn-outline-success'} btn-sm`}>For Pick-up</button>
