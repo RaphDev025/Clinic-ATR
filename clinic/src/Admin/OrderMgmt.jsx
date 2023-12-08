@@ -45,6 +45,34 @@ const OrderMgmt = () => {
         fetchProducts()
     }, [])
 
+    const sendNotification = async (orderId, newStatus) => {
+        try {
+            const orderDetails = orders.find((order) => order._id === orderId);
+
+            const userNotificationData = {
+                to: orderDetails.user_name,
+                from: 'ATR Skin Care',  // Replace with the appropriate sender information
+                content: `Your order (${orderId}) status has been updated to ${newStatus}.`,
+            };
+
+            const notificationResponse = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userNotificationData),
+            });
+
+            if (!notificationResponse.ok) {
+                throw new Error('Failed to send notification');
+            }
+
+            console.log('Notification sent successfully');
+        } catch (error) {
+            console.error('Error sending notification:', error.message);
+        }
+    };
+
     const setStatus = async (orderId, newStatus) => {
         try {
             // Send a PATCH request to update the order status
@@ -60,6 +88,8 @@ const OrderMgmt = () => {
                 throw new Error('Failed to update order status');
             }
     
+            await sendNotification(orderId, newStatus);
+
             // Update pendingOrders state based on the newStatus
             if (newStatus === 'Pending') {
                 setPendingOrders((prevPendingOrders) => prevPendingOrders + 1);

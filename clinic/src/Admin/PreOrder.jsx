@@ -15,14 +15,13 @@ const PreOrder = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order');
-        const count = await fetch('https://clinic-atr-server-inky.vercel.app/api/pre-order/count');
 
-        const jsonCount = await count.json();
         const json = await response.json();
 
         if (response.ok) {
           setOrders(json);
-          setTotalOrders(jsonCount.totalOrders);
+          console.log(json.length)
+          setTotalOrders(json.length);
         }
         console.log(json);
       } catch (error) {

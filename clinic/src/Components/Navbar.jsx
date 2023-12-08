@@ -39,7 +39,7 @@ const Navbar = () => {
         
                 const data = await response.json();
                 // Filter notifications for the admin user
-                const adminNotifications = data.filter(notification => notification.to === 'customer' )
+                const adminNotifications = data.filter(notification => notification.to === user.user_name )
                 
                 // Update state with merged notifications
                 setNotifications(adminNotifications);

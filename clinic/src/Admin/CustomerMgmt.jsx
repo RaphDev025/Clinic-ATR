@@ -90,6 +90,7 @@ const CustomerMgmt = () => {
                             <span className='w-100 fw-bold'>{'Gender'}</span>
                             <span className='w-100 fw-bold'>{'Address'}</span>
                             <span className='w-100 fw-bold'>{'Contact'}</span>
+                            <span className='w-100 fw-bold'>{'Action'}</span>
                         </div>
                     {loading ? (
                         <div className='d-flex flex-column  gap-3'>
