@@ -121,8 +121,8 @@ const AddToCart = () => {
       alert('Cart Item Uploaded')
     const adminNotification = {
       to: 'admin', // Specify the admin's identifier or address
-      from: `${item.first_name}`,
-      content: `${item.first_name} has created a new Order Transaction!`,
+      from: `${item.user_name}`,
+      content: `${item.user_name} has created a new Order Transaction!`,
     };
 
     // Assuming there's an API endpoint for sending notifications
@@ -141,8 +141,8 @@ const AddToCart = () => {
     // Send notification to user (if shipping option is 'For Pick-Up')
     if (item.shipping === 'For Pick-up') {
       const userPickupNotification = {
-        to: `${item.first_name}`, // Assuming the user identifier or address
-        from: `${item.first_name}`,
+        to: `${item.user_name}`, // Assuming the user identifier or address
+        from: `${item.user_name}`,
         content: `Your order needs to be picked up after 2 days.`,
       };
 

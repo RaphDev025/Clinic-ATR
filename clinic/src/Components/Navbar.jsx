@@ -35,7 +35,7 @@ const Navbar = () => {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
 
-      const username = user.user_name;
+      const username = user.first_name;
       const data = await response.json();
       const userNotifications = data.filter((notification) => notification.to === username);
 
