@@ -2,7 +2,7 @@ const Feedback = require('../Models/FeedbackModel')
 
 // Get 
 const getFeedback = async (req, res) => {
-    const orders = await Feedback.find({}).sort({createdAt: -1}).limit(4)
+    const orders = await Feedback.find({}).sort({createdAt: -1})
     res.status(200).json(orders)
 }
 
