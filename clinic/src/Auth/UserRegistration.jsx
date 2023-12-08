@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { IconPark } from 'assets/SvgIcons'
 
 const UserRegistration = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false)
+    const [passwordStrength, setPasswordStrength] = useState('Weak');
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -21,12 +22,39 @@ const UserRegistration = () => {
     })
     const [error, setError] = useState(null)
 
+    const checkPasswordStrength = (password) => {
+        const criteria = [
+            { regex: /[a-z]/, weight: 1, description: 'lowercase letters' },
+            { regex: /[A-Z]/, weight: 1, description: 'uppercase letters' },
+            { regex: /[0-9]/, weight: 1, description: 'numbers' },
+            { regex: /[^a-zA-Z0-9]/, weight: 2, description: 'special characters' },
+            { regex: /.{8,}/, weight: 2, description: 'at least 8 characters' },
+        ];
+
+        const totalScore = criteria.reduce((score, criterion) => {
+            return score + (criterion.regex.test(password) ? criterion.weight : 0);
+        }, 0);
+
+        if (totalScore >= 5) {
+            return 'Strong';
+        } else if (totalScore >= 3) {
+            return 'Moderate';
+        } else {
+            return 'Weak';
+        }
+    };
+
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [id]: value,
-        }));
+        }))
+
+        if (id === 'password') {
+            const strength = checkPasswordStrength(value);
+            setPasswordStrength(strength);
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -103,7 +131,7 @@ const UserRegistration = () => {
                     </div>
                     {/* Email & Password*/}
                     <div role='group' className='group-fields'>
-                        <div className='user-inputs'>
+                        <div className='user-inputs '>
                             <label htmlFor='email'>Email</label>
                             <input type='email' className='p-2 rounded-3' id='email' placeholder='Email' value={formData.email} onChange={handleChange} required />
                         </div>
@@ -120,6 +148,14 @@ const UserRegistration = () => {
 
                     <div className='submit-button'>
                         <button className='btn btn-outline-success px-4' type='submit'><strong>Create Account</strong></button>
+                        {formData.password && (
+                            <div className='user-inputs password-strength w-100'>
+                                <label className='w-100'>Password Strength:</label>
+                                <div className={`password-strength-indicator ps-2 ${passwordStrength.toLowerCase()}`}>
+                                    {passwordStrength}
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className='d-flex align-items-center justify-content-start p-0 container'>
                         <span className='txt text-success'>Already have an account?</span>

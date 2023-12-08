@@ -20,6 +20,7 @@ const Profile = () => {
         profile: ''
         // Add more fields as needed
     })
+    const [passwordStrength, setPasswordStrength] = useState('Weak');
 
     useEffect(() => {
         if (user) {
@@ -65,6 +66,30 @@ const Profile = () => {
         }));
     };
 
+    const criteria = [
+        { regex: /[a-z]/, weight: 1, description: 'lowercase letters' },
+        { regex: /[A-Z]/, weight: 1, description: 'uppercase letters' },
+        { regex: /[0-9]/, weight: 1, description: 'numbers' },
+        { regex: /[^a-zA-Z0-9]/, weight: 2, description: 'special characters' },
+        { regex: /.{8,}/, weight: 2, description: 'at least 8 characters' },
+    ];
+
+    const checkPasswordStrength = (password) => {
+        // ... (existing checkPasswordStrength function)
+
+        const totalScore = criteria.reduce((score, criterion) => {
+            return score + (criterion.regex.test(password) ? criterion.weight : 0);
+        }, 0);
+
+        if (totalScore >= 5) {
+            return 'Strong';
+        } else if (totalScore >= 3) {
+            return 'Moderate';
+        } else {
+            return 'Weak';
+        }
+    };
+
     const handleChange = (e) => {
         const { id, value } = e.target;
         // Update the userDetails state based on the input field
@@ -72,6 +97,10 @@ const Profile = () => {
             ...prevDetails,
             [id]: value,
         }));
+        if (id === 'password') {
+            const strength = checkPasswordStrength(value);
+            setPasswordStrength(strength);
+        }
     };
 
     const handleSave = async (e) => {
@@ -168,6 +197,14 @@ const Profile = () => {
                         </div>
 
                         <div className='w-100 d-flex justify-content-end align-items-end py-3'>
+                        {userDetails.password && ( // Only show if password is not null
+                                <div className='user-inputs password-strength w-100'>
+                                    <label className='w-100'>Password Strength:</label>
+                                    <div className={`password-strength-indicator ps-2 ${passwordStrength.toLowerCase()}`}>
+                                        {passwordStrength}
+                                    </div>
+                                </div>
+                            )}
                             <button className='btn-success w-25 btn' type='submit'>Save</button>
                         </div>
                     </form>

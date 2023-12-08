@@ -10,10 +10,36 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState('Weak');
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
-    }
+    };
+
+    const checkPasswordStrength = (password) => {
+        // Your password strength logic (you can reuse the checkPasswordStrength function from the previous example)
+
+        // For demonstration purposes, I'm using the previous logic
+        const criteria = [
+            { regex: /[a-z]/, weight: 1, description: 'lowercase letters' },
+            { regex: /[A-Z]/, weight: 1, description: 'uppercase letters' },
+            { regex: /[0-9]/, weight: 1, description: 'numbers' },
+            { regex: /[^a-zA-Z0-9]/, weight: 2, description: 'special characters' },
+            { regex: /.{8,}/, weight: 2, description: 'at least 8 characters' },
+        ];
+
+        const totalScore = criteria.reduce((score, criterion) => {
+            return score + (criterion.regex.test(password) ? criterion.weight : 0);
+        }, 0);
+
+        if (totalScore >= 5) {
+            return 'Strong';
+        } else if (totalScore >= 3) {
+            return 'Moderate';
+        } else {
+            return 'Weak';
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,6 +68,12 @@ const LoginPage = () => {
         }
     };
 
+    useEffect(() => {
+        // Update password strength when the password changes
+        const strength = checkPasswordStrength(password);
+        setPasswordStrength(strength);
+    }, [password]);
+
     return (
         <main className='backgroundLogin login-container m-0'>
             <section className='m-0 inner-container'>
@@ -69,10 +101,18 @@ const LoginPage = () => {
                                     Forgot Password?
                                 </Link>
                             </div>
-                            <div className='d-flex justify-content-end w-100'>
+                            <div className='d-flex justify-content-end align-items-end flex-column w-100'>
                                 <button type='submit' className='btn btn-success btn-sm text-uppercase py-2 w-50'>
                                     Log In
                                 </button>
+                                {password && (
+                                    <div className='user-inputs password-strength w-100'>
+                                        <label className='w-100'>Password Strength:</label>
+                                        <div className={`password-strength-indicator ps-2 ${passwordStrength.toLowerCase()}`}>
+                                            {passwordStrength}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className='text-success' style={{fontSize: '14px'}}>

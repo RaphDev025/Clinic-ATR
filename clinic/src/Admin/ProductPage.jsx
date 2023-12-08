@@ -9,6 +9,15 @@ const ProductPage = () => {
     const [loading, setLoading] = useState(true)
     const [selectedItem, setSelectedItem] = useState(null); // Add this state
     const [count, setCount] = useState(0)
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredProducts = products
+        ? products.filter((product) => product.item_name.toLowerCase().includes(searchQuery.toLowerCase()))
+        : [];
 
     // Fetching Data from Database
     useEffect(() => {
@@ -76,6 +85,14 @@ const ProductPage = () => {
         <main id='product' className=' container-fluid '> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4'> 
                 <h6 className='m-0 fw-bold text-warning '>Products</h6>
+                <span className="w-100">
+                    <input
+                        type="text"
+                        placeholder="Search Item Name..."
+                        className="form-control"
+                        onChange={handleSearch}
+                    />
+                </span> 
                 <div className='d-flex flex-column'>
                     <div className='d-flex justify-content-between'>
                         <h4 className='text-light'>Product List</h4>
@@ -104,7 +121,7 @@ const ProductPage = () => {
                             </div>
                         ) : (
                             <>
-                            {products && products.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <div className='d-flex align-items-center text-center gap-3 px-3 py-2 rounded-3' key={product._id} style={{backgroundColor: '#D9D9D980'}}>
                                     <span className='w-100 d-flex justify-content-center align-items-center gap-2'>
                                         <img src={product.product_img} width={'20%'} alt={'product'} />

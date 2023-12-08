@@ -36,13 +36,16 @@ const Navbar = () => {
                 if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status}`);
                 }
-        
+                const username = user.first_name;
+
+                console.log(username);
                 const data = await response.json();
-                // Filter notifications for the admin user
-                const adminNotifications = data.filter(notification => notification.to === user.user_name )
+                // Filter notifications for the current user
+                const userNotifications = data.filter(notification => notification.to === username);
                 
+                console.log(userNotifications)
                 // Update state with merged notifications
-                setNotifications(adminNotifications);
+                setNotifications(userNotifications);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }
@@ -113,11 +116,11 @@ const Navbar = () => {
                     {/* Buttons */}
                     <form className='d-flex justify-content-center gap-3 p-2'>
                         <Link onClick={handleNavbarToggle} to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
-                        <div className="dropdown dropstart">
+                        <div className="dropdown dropstart" >
                             <Link className=' px-1 nav-button' data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
                                 <IconPark path={'mdi:bell'} size={24}/>
                             </Link>
-                            <ul className="dropdown-menu">
+                            <ul className="dropdown-menu overflow-y-auto" style={{height: '450px'}}>
                             {notifications && notifications.length > 0 ? (
                                 notifications.map((notify) => (
                                     <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>

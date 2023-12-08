@@ -8,6 +8,15 @@ const CustomerMgmt = () => {
     const [loading, setLoading] = useState(true)
     const [count, setCount] = useState(0)
     const [newUsers, setNewUsers] = useState(0)
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredProducts = users
+        ? users.filter((product) => product.first_name.toLowerCase().includes(searchQuery.toLowerCase()))
+        : [];
 
     // Fetching Data from Database
     useEffect(() => {
@@ -71,6 +80,14 @@ const CustomerMgmt = () => {
         <main id='customer' className=' container-fluid'> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4 '> 
                 <h6 className='m-0 fw-bold text-warning '>Customers</h6>
+                <span className="w-100">
+                    <input
+                        type="text"
+                        placeholder="Search First Name..."
+                        className="form-control"
+                        onChange={handleSearch}
+                    />
+                </span> 
                 <div className='d-flex flex-column'>
                     <h4 className='text-light'>User Management</h4>
                     <div className='d-flex gap-4 border-bottom border-warning border-5 py-4 mb-4'>
@@ -100,7 +117,7 @@ const CustomerMgmt = () => {
                         </div>
                     ) : (
                         <>
-                        {users && users.map((user) => (
+                        {filteredProducts.map((user) => (
                             <div className='d-flex gap-3 justify-content-center align-items-center px-3 py-2 rounded-3' key={user._id} style={{backgroundColor: '#D9D9D980'}}>
                                 <span className='w-100'>{user.first_name} {user.last_name}</span>
                                 <span className='w-100'>{user.user_name}</span>

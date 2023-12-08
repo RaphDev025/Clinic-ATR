@@ -95,6 +95,7 @@
 }
 .submit-button{
     display: flex;
+    flex-direction: column;
     justify-content: end;
     padding: 15px 0;
     width: 100%;

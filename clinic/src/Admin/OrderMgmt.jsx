@@ -11,6 +11,15 @@ const OrderMgmt = () => {
     const [pendingOrders, setPendingOrders] = useState(null)
     const [progressOrders, setProgressOrders] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredProducts = orders
+        ? orders.filter((product) => product._id.toLowerCase().includes(searchQuery.toLowerCase()))
+        : [];
 
     // Fetching Data from Database
     useEffect(() => {
@@ -183,6 +192,14 @@ const OrderMgmt = () => {
         <main id='order' className=' container-fluid  '> 
             <section className='opaque-background rounded-2 container px-3 py-4 d-flex flex-column gap-4'> 
                 <h6 className='m-0 fw-bold text-warning '>Orders</h6>
+                <span className="w-100">
+                    <input
+                        type="text"
+                        placeholder="Search Order ID..."
+                        className="form-control"
+                        onChange={handleSearch}
+                    />
+                </span> 
                 <div className='d-flex flex-column'>
                     <h4 className='text-light'>Order Management</h4>
                     <div className='d-flex justify-content-between gap-3 border-bottom border-warning border-5 py-4 mb-4'>
@@ -229,7 +246,7 @@ const OrderMgmt = () => {
                             </div>
                         ) : (
                             <>
-                            {orders && orders.map((order) => (
+                            {filteredProducts && filteredProducts.map((order) => (
                                 <div className='accordion-item rounded-3' key={order._id} style={{backgroundColor: '#D9D9D980'}}>
                                     <div className='accordion-header d-flex align-items-center'>
                                         <button style={{fontSize: '12px'}} className='btn d-flex gap-2 w-75 align-items-center ' type='button' data-bs-toggle='collapse' data-bs-target={`#collapse${order._id}`} aria-expanded="true" aria-controls={`collapse${order._id}`}>
