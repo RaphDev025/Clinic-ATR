@@ -35,7 +35,7 @@ const TestimonyPage = () => {
     const handleFeedbackSubmit = () => {
         if (!user) {
             // User is not logged in, handle accordingly (e.g., show a login modal)
-            console.log('User is not logged in. Please log in to submit feedback.');
+            alert('User is not logged in. Please log in to submit feedback.');
             return;
         }
 
