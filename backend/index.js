@@ -12,6 +12,7 @@ const order = require('./Routes/ordering')
 const preorder = require('./Routes/preorder')
 const history = require('./Routes/history')
 const notification = require('./Routes/notification')
+const feedback = require('./Routes/feedback')
 
 // express app
 const app = express()
@@ -29,6 +30,7 @@ app.use('/api/ordering', order)
 app.use('/api/pre-order', preorder)
 app.use('/api/history', history)
 app.use('/api/notification', notification)
+app.use('/api/feedback', feedback)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)

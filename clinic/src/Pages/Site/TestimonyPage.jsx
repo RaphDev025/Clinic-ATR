@@ -1,9 +1,64 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { GradientHeader, Testimonials } from 'Components'
 import avatar from 'assets/extra/Vector.png'
+import { useAuth } from 'path-to-your/AuthContext'; // Update the path accordingly
 
 const TestimonyPage = () => {
+    const { user } = useAuth();
+    const [feedback, setFeedback] = useState('');
+    const [testimonials, setTestimonials] = useState(null);
 
+    useEffect(() => {
+        // Fetch testimonials from the database or your API endpoint
+        // Replace 'your-api-endpoint-for-testimonials' with the actual endpoint
+        fetch('your-api-endpoint-for-testimonials')
+            .then(response => response.json())
+            .then(data => {
+                setTestimonials(data);
+            })
+            .catch(error => {
+                console.error('Error fetching testimonials:', error);
+            });
+    }, []);
+
+    const handleFeedbackSubmit = () => {
+        if (!user) {
+            // User is not logged in, handle accordingly (e.g., show a login modal)
+            console.log('User is not logged in. Please log in to submit feedback.');
+            return;
+        }
+
+        // User is logged in, send the post request with feedback data
+        const postData = {
+            userId: user.id, // Assuming user object has an 'id' property
+            first_name: user.first_name, // Assuming user object has a 'first_name' property
+            last_name: user.last_name, // Assuming user object has a 'last_name' property
+            feedback: feedback,
+        };
+
+        // Your API endpoint for submitting feedback
+        fetch('your-feedback-api-endpoint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Handle success
+                    console.log('Feedback submitted successfully!');
+                    // Optionally, you can reset the feedback input
+                    setFeedback('');
+                } else {
+                    // Handle error
+                    console.error('Error submitting feedback:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting feedback:', error);
+            });
+    };
     const sampleData = [
         {
           id: 1,
@@ -44,7 +99,7 @@ const TestimonyPage = () => {
                         <h2 className='header-testimony text-center'>Don't just take our word for it - See what our customers have to say</h2>
                     </div>
                     <div className='border-top border-bottom border-success border-3 py-5'>
-                        <Testimonials contents={sampleData} />
+                        <Testimonials contents={testimonials} />
                     </div>
                 </div>
             </section> 
@@ -71,7 +126,7 @@ const TestimonyPage = () => {
                                 <textarea placeholder='Write your feedbacks for our products/services here' className='rounded-3 w-100 p-3' rows='10' style={{resize: 'none'}}></textarea>
                             </div>
                             <div className='ms-auto'>
-                                <button className='btn btn-success rounded-3 px-3 text-uppercase'>Submit</button>
+                                <button type='button' onClick={{handleFeedbackSubmit}} className='btn btn-success rounded-3 px-3 text-uppercase'>Submit</button>
                             </div>
                         </form>
                     </div>

@@ -178,7 +178,6 @@ const AddToCart = () => {
   };
 
   const handlePreOrder = async () => {
-    // Assuming you want to save the current item details for pre-order
     const preOrderDetails = {
       item_id: item.item_id,
       item_name: item.item_name,
@@ -191,19 +190,12 @@ const AddToCart = () => {
       phone: item.phone,
       address: item.address,
       user_id: item.user_id,
-      // Add any other details you want to save for pre-order
     };
     console.log('PreOrder:', preOrderDetails)
     // Save the pre-order details using the setDetails function from usePreOrder
     setDetails(preOrderDetails);
     navigate('/confirmation/pre-order')
-    // Now, you can use preOrderDetails wherever you need within this component
-    // or in other components that use usePreOrder hook
-  
-    // Perform any other logic or API requests related to pre-order
-    // ...
-  
-    // Optionally, you can reset the item state or perform any other cleanup
+
     setItem({
       user_name: user.user_name,
       phone: user.phone,
@@ -217,8 +209,6 @@ const AddToCart = () => {
       courier: '',
     });
   };
-  
-  
 
   return (
     <div className={`modal fade`} id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden={true}>
@@ -247,7 +237,7 @@ const AddToCart = () => {
                         <IconPark path={'ic:round-plus'} />
                       </button>
                     </div>
-                    {itemData.qty === 0 ? <pre className="text-danger fst-italic m-0">*Out of Stock</pre> : <pre>Stocks: {itemData.qty}</pre>}
+                    {itemData.qty === 0 ? <pre className="text-danger fst-italic m-0">*Out of Stock</pre> : <pre>Stocks: {itemData.qty - item.qty}</pre>}
                   </div>
                   <div className="d-flex gap-2 w-100">
                     <button type="button" onClick={() => setItem({ ...item, shipping: 'For Pick-up', courier: 'None' })} className={`w-100 btn ${item.shipping === 'For Pick-up' ? 'btn-success' : 'btn-outline-success'} btn-sm`}>
