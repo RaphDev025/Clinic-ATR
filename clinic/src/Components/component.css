@@ -67,6 +67,18 @@
     font-weight: 500;
     color: var(--primary-color);
 }
+@media (max-width: 767px) {
+    .dropstart2 {
+      right: auto;
+      left: 0;
+      width: 250px
+    }
+  
+    .dropstart2 .dropdown-menu2 {
+      left: auto;
+      right: 0;
+    }
+  }
 @media (max-width: 767px){
     .head {
         font-size: 16px

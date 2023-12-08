@@ -28,33 +28,33 @@ const Navbar = () => {
     const [notifications, setNotifications] = useState([])
 
     const fetchNotifications = async () => {
-        try {
-          const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
-    
-          if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.status}`);
-          }
-    
-          const username = user.first_name;
-          const data = await response.json();
-          const userNotifications = data.filter((notification) => notification.to === username);
-    
-          setNotifications(userNotifications);
-        } catch (error) {
-          console.error('Error fetching notifications:', error);
-        }
-      };
-    
-      useEffect(() => {
-        // Fetch notifications initially
-        fetchNotifications();
-    
-        // Set up a timer to fetch notifications every second
-        const intervalId = setInterval(fetchNotifications, 1000);
-    
-        // Clean up the timer when the component unmounts
-        return () => clearInterval(intervalId);
-      }, [user]);
+    try {
+      const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+
+      const username = user.user_name;
+      const data = await response.json();
+      const userNotifications = data.filter((notification) => notification.to === username);
+
+      setNotifications(userNotifications);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch notifications initially
+    fetchNotifications();
+
+    // Set up a timer to fetch notifications every second
+    const intervalId = setInterval(fetchNotifications, 1000);
+
+    // Clean up the timer when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [user]);
 
     const handleNotificationClick = async (notificationId) => {
         try {
@@ -94,41 +94,41 @@ const Navbar = () => {
                     <ul className='navbar-nav gap-2 text-center ms-auto'>
                         {/* nav items */}
                         <li className={`nav-item ${select === 'home' ? 'active' : ''}`} onClick={() => handleItemClick('home')}>
-                            <Link className={`nav-link ${select === 'home' ? 'active' : 'text-success'}`} to='/'>Home</Link>
+                            <Link className={`nav-link text-end ${select === 'home' ? 'active' : 'text-success'}`} to='/'>Home</Link>
                         </li>
                         <li className={`nav-item ${select === 'feed' ? 'active' : ''}`} onClick={() => handleItemClick('feed')}>
-                            <Link className={`nav-link ${select === 'feed' ? 'active' : 'text-success'}`} to='/newsfeed'>Updates</Link>
+                            <Link className={`nav-link text-end ${select === 'feed' ? 'active' : 'text-success'}`} to='/newsfeed'>Updates</Link>
                         </li>
                         <li className={`nav-item ${select === 'service' ? 'active' : ''}`} onClick={() => handleItemClick('service')}>
-                            <Link className={`nav-link ${select === 'service' ? 'active' : 'text-success'}`} to='/service'>Services</Link>
+                            <Link className={`nav-link text-end ${select === 'service' ? 'active' : 'text-success'}`} to='/service'>Services</Link>
                         </li>
                         <li className={`nav-item ${select === 'feature' ? 'active' : ''}`} onClick={() => handleItemClick('feature')}>
-                            <Link className={`nav-link ${select === 'feature' ? 'active' : 'text-success'}`} to='/featured'>Products</Link>
+                            <Link className={`nav-link text-end ${select === 'feature' ? 'active' : 'text-success'}`} to='/featured'>Products</Link>
                         </li>
                         <li className={`nav-item ${select === 'testimony' ? 'active' : ''}`} onClick={() => handleItemClick('testimony')}>
-                            <Link className={`nav-link ${select === 'testimony' ? 'active' : 'text-success'}`} to='/testimony'>Testimonials</Link>
+                            <Link className={`nav-link text-end ${select === 'testimony' ? 'active' : 'text-success'}`} to='/testimony'>Testimonials</Link>
                         </li>
                         <li className={`nav-item ${select === 'about' ? 'active' : ''}`} onClick={() => handleItemClick('about')}>
-                            <Link className={`nav-link ${select === 'about' ? 'active' : 'text-success'}`} to='/about'>About Us</Link>
+                            <Link className={`nav-link text-end ${select === 'about' ? 'active' : 'text-success'}`} to='/about'>About Us</Link>
                         </li>
                         <li className={`nav-item ${select === 'contact' ? 'active' : ''}`} onClick={() => handleItemClick('contact')}>
-                            <Link className={`nav-link ${select === 'contact' ? 'active' : 'text-success'}`} to='/contact'>Contact Us</Link>
+                            <Link className={`nav-link text-end ${select === 'contact' ? 'active' : 'text-success'}`} to='/contact'>Contact Us</Link>
                         </li>
                     </ul>
                     {/* Buttons */}
-                    <form className='d-flex justify-content-center gap-3 p-2'>
+                    <form className='d-flex justify-content-end gap-3 p-2'>
                         <Link onClick={handleNavbarToggle} to='/cart' className=' px-1 nav-button'><IconPark path={'mdi:cart'}  size={24}/></Link>
                         <div className="dropdown dropstart" >
                             <Link className=' px-1 nav-button' data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
                                 <IconPark path={'mdi:bell'} size={24}/>
                             </Link>
-                            <ul className="dropdown-menu overflow-y-auto" style={{height: '450px'}}>
+                            <ul className="dropdown-menu overflow-y-auto gap-3" style={{height: '250px', width: '200px'}}>
                             {notifications && notifications.length > 0 ? (
                                 notifications.map((notify) => (
-                                    <li key={notify._id} className="dropdown-item" onClick={() => handleNotificationClick(notify._id)}>
+                                    <li key={notify._id} className="dropdown-item w-100 rounded-3 border-bottom " onClick={() => handleNotificationClick(notify._id)}>
                                     <div className='d-flex flex-column gap-2'>
-                                        <p className='m-0 d-flex w-100 flex-wrap'>{notify.content}</p>
-                                        <p className='m-0 fst-italic' style={{fontSize: '12px'}}>{notify.from}</p>
+                                        <p className='m-0 d-flex w-100 flex-wrap text-wrap' style={{fontSize: '11px'}}>{notify.content}</p>
+                                        <p className='m-0 fst-italic text-end' style={{fontSize: '10px'}}>-{notify.from}</p>
                                     </div>
                                     </li>
                                 ))
