@@ -27,32 +27,34 @@ const Navbar = () => {
 
     const [notifications, setNotifications] = useState([])
 
-    useEffect(() => {
-        // Function to fetch notifications data
-        const fetchNotifications = async () => {
-            try {
-                const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification')
-        
-                if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status}`);
-                }
-                const username = user.first_name;
-
-                console.log(username);
-                const data = await response.json();
-                // Filter notifications for the current user
-                const userNotifications = data.filter(notification => notification.to === username);
-                
-                console.log(userNotifications)
-                // Update state with merged notifications
-                setNotifications(userNotifications);
-            } catch (error) {
-                console.error('Error fetching notifications:', error);
-            }
-        };
-        // Call the fetchNotifications function when the component mounts
+    const fetchNotifications = async () => {
+        try {
+          const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/notification');
+    
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+          }
+    
+          const username = user.first_name;
+          const data = await response.json();
+          const userNotifications = data.filter((notification) => notification.to === username);
+    
+          setNotifications(userNotifications);
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
+      };
+    
+      useEffect(() => {
+        // Fetch notifications initially
         fetchNotifications();
-    }, [])
+    
+        // Set up a timer to fetch notifications every second
+        const intervalId = setInterval(fetchNotifications, 1000);
+    
+        // Clean up the timer when the component unmounts
+        return () => clearInterval(intervalId);
+      }, [user]);
 
     const handleNotificationClick = async (notificationId) => {
         try {

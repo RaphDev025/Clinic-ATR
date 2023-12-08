@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { IconPark } from 'assets/SvgIcons'
 import vector from 'assets/extra/camera.png'
 
-const ViewItem = ({ selectedItem }) => {
+const ViewItem = ({ selectedItem, onUpdate  }) => {
 
     const [formData, setFormData] = useState({
         item_name: '',
@@ -59,6 +59,7 @@ const ViewItem = ({ selectedItem }) => {
             } else {
                 alert('Product Updated')
                 console.log(json)
+                onUpdate();
                 // Optionally, you can reset the form or perform other actions after a successful update
             }
         } catch (error) {

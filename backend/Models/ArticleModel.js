@@ -11,6 +11,12 @@ const ArticleSchema = new Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: String,
+    },
+    category: {
+        type: String,
+    },
     post_img: String
 }, { timestamps: true })
 

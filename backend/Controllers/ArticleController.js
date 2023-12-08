@@ -40,9 +40,9 @@ const getLatest = async (req, res) => {
 
 // Create Product
 const createArticle = async (req, res) => {
-    const { title, post_img, description } = req.body
+    const { title, post_img, description, category, price } = req.body
     try{
-        const articles = await Article.create({ title, post_img, description })
+        const articles = await Article.create({ title, post_img, description, category, price })
         res.status(200).json(articles)
     }catch(error){
         res.status(400).json({error: error.message})

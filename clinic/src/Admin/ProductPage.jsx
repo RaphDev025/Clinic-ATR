@@ -19,45 +19,39 @@ const ProductPage = () => {
         ? products.filter((product) => product.item_name.toLowerCase().includes(searchQuery.toLowerCase()))
         : [];
 
-    // Fetching Data from Database
-    useEffect(() => {
         const fetchProducts = async () => {
-        try {
-            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/products');
-            const json = await response.json();
-
-            if (response.ok) {
+            try {
+              const response = await fetch(
+                'https://clinic-atr-server-inky.vercel.app/api/products'
+              );
+              const json = await response.json();
+        
+              if (response.ok) {
                 setProducts(json);
+              }
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            } finally {
+              setLoading(false);
             }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            // Set loading to false once data is fetched
-            setLoading(false);
-        }
-        };
-        fetchProducts()
-    }, [])
-
-    // Fetching Data from Database
-    useEffect(() => {
-        const fetchCount = async () => {
-        try {
-            const response = await fetch('https://clinic-atr-server-inky.vercel.app/api/products/count');
-            const json = await response.json()
-
-            if (response.ok) {
-                setCount(json.totalUsers)
+          };
+        
+          const fetchCount = async () => {
+            try {
+              const response = await fetch(
+                'https://clinic-atr-server-inky.vercel.app/api/products/count'
+              );
+              const json = await response.json();
+        
+              if (response.ok) {
+                setCount(json.totalUsers);
+              }
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            } finally {
+              setLoading(false);
             }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            // Set loading to false once data is fetched
-            setLoading(false);
-        }
-        };
-        fetchCount()
-    }, [])
+          };
 
     const handleDelete = async (itemToDelete) => {
         try {
@@ -76,6 +70,18 @@ const ProductPage = () => {
             console.error('Error deleting item:', error);
         }
     }
+
+    useEffect(() => {
+        fetchProducts();
+      }, []);
+    
+      useEffect(() => {
+        fetchCount();
+      }, []);
+    
+      const handleUpdateCallback = () => {
+        fetchProducts(); // Fetch the updated data after an item is updated
+      };
     
     const handleEdit = (product) => {
         setSelectedItem(product);
@@ -149,7 +155,7 @@ const ProductPage = () => {
                 </div>
             </section>
             <CreateProductModal />
-            <ViewItem selectedItem={selectedItem} />
+            <ViewItem selectedItem={selectedItem} onUpdate={handleUpdateCallback} />
         </main>
     )
 }
